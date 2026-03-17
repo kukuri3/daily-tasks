@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Tasks - 美馬研究室</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; }
+
+  .header { background: linear-gradient(135deg, #2B4C7E 0%, #1a365d 100%); color: white; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+  .header h1 { font-size: 1.4em; font-weight: 600; }
+  .header .date { font-size: 0.95em; opacity: 0.85; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .header .progress { font-size: 0.9em; background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 20px; }
+
+  .check-now-btn { background: #F59E0B; color: #1a1a2e; border: none; padding: 8px 18px; border-radius: 8px; font-size: 0.9em; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+  .check-now-btn:hover { background: #FBBF24; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.25); }
+  .check-now-btn:active { transform: translateY(0); }
+  .check-now-btn .spin { display: inline-block; animation: spin 1s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: white; border-radius: 16px; padding: 32px; max-width: 480px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: center; }
+  .modal h2 { font-size: 1.2em; margin-bottom: 12px; color: #1a1a2e; }
+  .modal p { font-size: 0.92em; color: #475569; margin-bottom: 8px; line-height: 1.6; }
+  .modal .step { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin: 16px 0; text-align: left; }
+  .modal .step-num { display: inline-block; background: #2B4C7E; color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 0.8em; font-weight: 700; margin-right: 8px; }
+  .modal .step-line { font-size: 0.9em; margin-bottom: 6px; display: flex; align-items: center; }
+  .modal .close-btn { background: #2B4C7E; color: white; border: none; padding: 10px 28px; border-radius: 8px; font-size: 0.95em; font-weight: 600; cursor: pointer; margin-top: 16px; }
+  .modal .close-btn:hover { background: #1a365d; }
+  .modal .shortcut { background: #1e293b; color: #67e8f9; font-family: 'SF Mono', 'Menlo', monospace; padding: 8px 14px; border-radius: 6px; font-size: 0.85em; display: inline-block; margin-top: 8px; user-select: all; cursor: pointer; }
+  .modal .shortcut:hover { background: #0f172a; }
+
+  .container { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+
+  .section { background: white; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+  .section-header { padding: 14px 20px; font-weight: 700; font-size: 0.95em; display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+  .section-header .badge { font-size: 0.8em; padding: 2px 10px; border-radius: 12px; color: white; font-weight: 600; }
+
+  .priority-high .section-header { background: #FEE2E2; color: #991B1B; }
+  .priority-high .badge { background: #DC2626; }
+  .priority-mid .section-header { background: #FEF3C7; color: #92400E; }
+  .priority-mid .badge { background: #D97706; }
+  .priority-low .section-header { background: #DBEAFE; color: #1E40AF; }
+  .priority-low .badge { background: #2563EB; }
+
+  .task-list { padding: 0; }
+  .task-item { display: flex; align-items: flex-start; padding: 14px 20px; border-top: 1px solid #f0f0f0; transition: background 0.15s; gap: 12px; }
+  .task-item:hover { background: #fafbfc; }
+  .task-item.done { opacity: 0.45; }
+  .task-item.done .task-title { text-decoration: line-through; }
+
+  .task-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; border: 2px solid #cbd5e1; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all 0.15s; }
+  .task-check:hover { border-color: #2B4C7E; }
+  .task-check.checked { background: #2B4C7E; border-color: #2B4C7E; }
+  .task-check.checked::after { content: '✓'; color: white; font-size: 14px; font-weight: 700; }
+
+  .task-body { flex: 1; min-width: 0; }
+  .task-title { font-weight: 600; font-size: 0.95em; margin-bottom: 3px; }
+  .task-meta { font-size: 0.82em; color: #64748b; display: flex; flex-wrap: wrap; gap: 12px; }
+  .task-meta span { display: flex; align-items: center; gap: 3px; }
+
+  .mail-link { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background: #f1f5f9; color: #2B4C7E; text-decoration: none; font-size: 16px; transition: all 0.15s; margin-top: 2px; }
+  .mail-link:hover { background: #2B4C7E; color: white; transform: scale(1.1); }
+
+  .task-deadline { flex-shrink: 0; text-align: right; font-size: 0.82em; color: #64748b; min-width: 120px; }
+  .task-deadline .dl-date { font-weight: 600; color: #1a1a2e; }
+  .task-deadline.urgent .dl-date { color: #DC2626; }
+
+  .warning-banner { background: #FEF3C7; border: 1px solid #F59E0B; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; font-size: 0.9em; color: #92400E; display: flex; align-items: center; gap: 8px; }
+
+  .footer { text-align: center; padding: 20px; font-size: 0.8em; color: #94a3b8; }
+  .reset-btn { background: none; border: 1px solid #cbd5e1; padding: 4px 14px; border-radius: 6px; cursor: pointer; font-size: 0.8em; color: #64748b; margin-top: 8px; }
+  .reset-btn:hover { background: #f1f5f9; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Daily Tasks</h1>
+    <div class="date" id="dateDisplay"></div>
+  </div>
+  <div class="header-right">
+    <div class="progress" id="progressDisplay">0 / 0 完了</div>
+    <button class="check-now-btn" onclick="checkNow()">
+      <span id="checkIcon">🔄</span> いま確認
+    </button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>📬 メールからタスクを更新</h2>
+    <p>Claudeデスクトップアプリから手動スキャンを起動します。</p>
+    <div class="step">
+      <div class="step-line"><span class="step-num">1</span> Claudeデスクトップアプリを開く</div>
+      <div class="step-line"><span class="step-num">2</span> サイドバーの「Scheduled」セクションを開く</div>
+      <div class="step-line"><span class="step-num">3</span>「outlook-task-now」の ▶ ボタンをクリック</div>
+    </div>
+    <p>または、Claudeに直接こう伝えてください：</p>
+    <div class="shortcut" title="クリックでコピー" onclick="copyCommand()">Outlookのメールを確認してタスクリストを更新して</div>
+    <p id="copyMsg" style="font-size:0.8em;color:#2B4C7E;margin-top:4px;opacity:0;transition:opacity 0.3s;">コピーしました</p>
+    <button class="close-btn" onclick="document.getElementById('modalOverlay').classList.remove('active')">閉じる</button>
+  </div>
+</div>
+
+<div class="container" id="app"></div>
+
+<div class="footer">
+  Outlook メールから自動抽出 &middot; Powered by Claude<br>
+  <button class="reset-btn" onclick="resetAll()">チェックをすべてリセット</button>
+</div>
+
+<script>
+const STORAGE_KEY = 'daily_tasks_state';
+
+// --- TASK DATA (auto-generated section) ---
+const GENERATED_DATE = '2026-03-17';
+const tasks = [
+  {
+    id: 't1', priority: 'high',
+    title: '教授会議事録 確認',
+    from: '兼子 和宏', deadline: '3/17（本日）教授会前', urgent: true,
+    note: '第10回教授会・研究科委員会議事録（修正版）確認',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfXOpwAA'
+  },
+  {
+    id: 't2', priority: 'high',
+    title: '吉野太陽 研究室変更 対応',
+    from: '青山先生（Fw）', deadline: '3/17（本日）', urgent: true,
+    note: '学科長として研究室変更相談に回答',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfYZaQAA'
+  },
+  {
+    id: 't3', priority: 'high',
+    title: '総合型選抜試験問題の共有 全教員周知',
+    from: '服部 知美', deadline: '早急', urgent: true,
+    note: '学科会議決定「類題を共有する」を全教員へ周知',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfXcfwAA'
+  },
+  {
+    id: 't4', priority: 'mid',
+    title: 'アマゾン納品書 押印（2枚）',
+    from: '山崎 久美子', deadline: '3/12依頼〜早めに', urgent: false,
+    note: '総務課にて押印。依頼から5日経過',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGfsUAagAA'
+  },
+  {
+    id: 't5', priority: 'mid',
+    title: '学生優秀賞 学科表彰の準備',
+    from: '鈴木 香保里', deadline: '近日中', urgent: false,
+    note: '単年度GPAデータ受領済み（3/14）。3位以降の学科表彰を進める',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgAlXaAAA'
+  },
+  {
+    id: 't6', priority: 'mid',
+    title: '実践技術者講座 後期日程調整',
+    from: '中部電力 松林/奈良間', deadline: '3/26（木）まで', urgent: false,
+    note: '後期講師変更。12/1 or 12/8で回答。4/16前期資料は受領済み',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfYBKQAA'
+  },
+  {
+    id: 't7', priority: 'mid',
+    title: 'KSI特許 包括委任状 対応',
+    from: 'KSI Partners', deadline: '法定期限 4/20', urgent: false,
+    note: '①包括委任状に押印して返送、または②個別委任状内容確認。2/24～保留中',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgVx2sQAA'
+  },
+  {
+    id: 't8', priority: 'low',
+    title: 'MDA研究会 役員会＋講演会 出欠回答',
+    from: '池田 達哉', deadline: '3/25（水）14:00', urgent: false,
+    note: '⚠ ものづくりコンテスト打合せと同日同時刻で重複',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGfh4jAQAA'
+  },
+  {
+    id: 't9', priority: 'low',
+    title: 'ものづくりコンテスト打合せ',
+    from: '渡森 和彦', deadline: '3/25（水）14:00', urgent: false,
+    note: '研究実験棟231会議室。藤枝北高校 鈴木校長来訪。⚠ MDA役員会と重複',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGfh5cewAA'
+  },
+  {
+    id: 't10', priority: 'low',
+    title: 'CMSログインURL ブックマーク変更',
+    from: '向島 佑介', deadline: '随時', urgent: false,
+    note: '新URL: sist.artis-cms02.jp/main/cms-admin/',
+    mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGfsTNPwAA'
+  }
+];
+// --- END TASK DATA ---
+
+const priorityLabels = {
+  high: { label: '本日対応', icon: '🔴' },
+  mid:  { label: '近日中', icon: '🟡' },
+  low:  { label: '予定・軽微', icon: '🔵' }
+};
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    const s = JSON.parse(raw);
+    if (s.date !== GENERATED_DATE) return {};
+    return s.checked || {};
+  } catch { return {}; }
+}
+
+function saveState(checked) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: GENERATED_DATE, checked }));
+}
+
+let checkedState = loadState();
+let justCheckedIds = {};
+
+function render() {
+  const app = document.getElementById('app');
+  const groups = { high: [], mid: [], low: [] };
+  tasks.forEach(t => groups[t.priority].push(t));
+
+  let html = '';
+
+  // Warning banner for schedule conflict
+  html += `<div class="warning-banner">⚠ 3/25（水）14:00 にMDA研究会役員会（浜松）とものづくりコンテスト打合せ（袋井）が重複しています。いずれかの調整が必要です。</div>`;
+
+  const justChecked = new Set(Object.keys(justCheckedIds));
+
+  for (const [pri, label] of [['high', priorityLabels.high], ['mid', priorityLabels.mid], ['low', priorityLabels.low]]) {
+    if (groups[pri].length === 0) continue;
+    const remaining = groups[pri].filter(t => !checkedState[t.id] || justChecked.has(t.id));
+    if (remaining.length === 0) continue;
+    const doneCount = remaining.filter(t => checkedState[t.id]).length;
+    html += `<div class="section priority-${pri}">`;
+    html += `<div class="section-header">${label.icon} ${label.label} <span class="badge">${remaining.length - doneCount} 件</span></div>`;
+    html += `<div class="task-list">`;
+    for (const t of remaining) {
+      const done = checkedState[t.id];
+      html += `
+        <div class="task-item ${done ? 'done' : ''}" data-id="${t.id}">
+          <div class="task-check ${done ? 'checked' : ''}" onclick="toggle('${t.id}')"></div>
+          <div class="task-body">
+            <div class="task-title">${t.title}</div>
+            <div class="task-meta">
+              <span>👤 ${t.from}</span>
+              <span>📝 ${t.note}</span>
+            </div>
+          </div>
+          ${t.mailUrl ? `<a class="mail-link" href="${t.mailUrl}" target="_blank" title="元メールを開く">✉</a>` : ''}
+          <div class="task-deadline ${t.urgent ? 'urgent' : ''}">
+            <div class="dl-date">${t.deadline}</div>
+          </div>
+        </div>`;
+    }
+    html += `</div></div>`;
+  }
+
+  if (tasks.every(t => checkedState[t.id]) && justChecked.size === 0) {
+    html += `<div style="text-align:center;padding:60px 20px;color:#64748b;font-size:1.1em;">✅ すべてのタスクが完了しました</div>`;
+  }
+
+  app.innerHTML = html;
+  updateProgress();
+}
+
+function toggle(id) {
+  checkedState[id] = !checkedState[id];
+  saveState(checkedState);
+  if (checkedState[id]) {
+    justCheckedIds[id] = true;
+    render();
+    setTimeout(() => {
+      const el = document.querySelector(`.task-item[data-id="${id}"]`);
+      if (el) {
+        el.style.transition = 'opacity 0.4s, max-height 0.4s, padding 0.4s';
+        el.style.opacity = '0';
+        el.style.maxHeight = '0';
+        el.style.padding = '0 20px';
+        el.style.overflow = 'hidden';
+        setTimeout(() => { delete justCheckedIds[id]; render(); }, 450);
+      }
+    }, 600);
+  } else {
+    delete justCheckedIds[id];
+    render();
+  }
+}
+
+function resetAll() {
+  if (!confirm('すべてのチェックをリセットしますか？')) return;
+  checkedState = {};
+  saveState(checkedState);
+  render();
+}
+
+function updateProgress() {
+  const total = tasks.length;
+  const done = tasks.filter(t => checkedState[t.id]).length;
+  const remaining = total - done;
+  document.getElementById('progressDisplay').textContent = remaining > 0 ? `残り ${remaining} 件` : '✅ 全完了';
+}
+
+// Date display
+const now = new Date();
+const days = ['日','月','火','水','木','金','土'];
+document.getElementById('dateDisplay').textContent =
+  `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${days[now.getDay()]}）`;
+
+function checkNow() {
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('active');
+  }
+}
+
+function copyCommand() {
+  navigator.clipboard.writeText('Outlookのメールを確認してタスクリストを更新して').then(() => {
+    const msg = document.getElementById('copyMsg');
+    msg.style.opacity = '1';
+    setTimeout(() => msg.style.opacity = '0', 1500);
+  });
+}
+
+render();
+</script>
+</body>
+</html>
