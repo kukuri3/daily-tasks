@@ -62,6 +62,14 @@
   .task-meta { font-size: 0.82em; color: #64748b; display: flex; flex-wrap: wrap; gap: 12px; }
   .task-meta span { display: flex; align-items: center; gap: 3px; }
 
+  .summary-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 0.78em; color: #2B4C7E; cursor: pointer; margin-top: 6px; padding: 3px 8px; border-radius: 4px; background: #f1f5f9; transition: background 0.15s; user-select: none; }
+  .summary-toggle:hover { background: #e2e8f0; }
+  .summary-toggle .arrow { display: inline-block; font-size: 0.7em; transition: transform 0.2s; }
+  .summary-toggle.open .arrow { transform: rotate(90deg); }
+  .summary-box { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
+  .summary-box.open { max-height: 500px; }
+  .summary-content { margin-top: 8px; padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.82em; color: #334155; line-height: 1.65; white-space: pre-wrap; }
+
   .mail-link { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background: #f1f5f9; color: #2B4C7E; text-decoration: none; font-size: 16px; transition: all 0.15s; margin-top: 2px; }
   .mail-link:hover { background: #2B4C7E; color: white; transform: scale(1.1); }
 
@@ -125,6 +133,7 @@ const tasks = [
     title: '教授会議事録 確認',
     from: '兼子 和宏', deadline: '3/17（本日）教授会前', urgent: true,
     note: '第10回教授会・研究科委員会議事録（修正版）確認',
+    summary: '兼子先生より、第10回教授会・研究科委員会の議事録（修正版）が送付されました。教授会前に内容を確認し、修正箇所に問題がないかチェックする必要があります。前回指摘した記載漏れが反映されているか確認してください。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfXOpwAA'
   },
   {
@@ -132,6 +141,7 @@ const tasks = [
     title: '吉野太陽 研究室変更 対応',
     from: '青山先生（Fw）', deadline: '3/17（本日）', urgent: true,
     note: '学科長として研究室変更相談に回答',
+    summary: '青山先生から転送。電気電子工学科3年の吉野太陽さんが研究室変更を希望しています。現在の研究室との相性や今後の研究テーマについて悩んでおり、学科長として面談・対応方針の回答が求められています。変更先の受入可否も確認が必要です。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfYZaQAA'
   },
   {
@@ -139,6 +149,7 @@ const tasks = [
     title: '総合型選抜試験問題の共有 全教員周知',
     from: '服部 知美', deadline: '早急', urgent: true,
     note: '学科会議決定「類題を共有する」を全教員へ周知',
+    summary: '服部先生より、学科会議で決定した総合型選抜の試験問題について、類題を全教員で共有する方針の周知依頼です。入試委員会の方針として、過去問の類題を教員間で共有し、出題の重複や偏りを防ぐ狙いがあります。学科長から全教員へメールで周知してください。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfXcfwAA'
   },
   {
@@ -146,6 +157,7 @@ const tasks = [
     title: 'アマゾン納品書 押印（2枚）',
     from: '山崎 久美子', deadline: '3/12依頼〜早めに', urgent: false,
     note: '総務課にて押印。依頼から5日経過',
+    summary: '山崎さん（総務課）より、アマゾンからの納品書2枚に押印が必要との依頼です。3/12付で届いており、経理処理の締め切りに間に合わせるため早めの対応が求められています。総務課窓口にて直接押印する形です。既に5日経過しているため、早急に処理してください。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGfsUAagAA'
   },
   {
@@ -153,6 +165,7 @@ const tasks = [
     title: '学生優秀賞 学科表彰の準備',
     from: '鈴木 香保里', deadline: '近日中', urgent: false,
     note: '単年度GPAデータ受領済み（3/14）。3位以降の学科表彰を進める',
+    summary: '鈴木さんより、学生優秀賞の単年度GPAデータが3/14に送付されました。学長表彰（1・2位）は全学で対応済みのため、3位以降の学科独自表彰の選考と準備を進める必要があります。表彰状の作成、対象学生への連絡、表彰式の日程調整を行ってください。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgAlXaAAA'
   },
   {
@@ -160,6 +173,7 @@ const tasks = [
     title: '実践技術者講座 後期日程調整',
     from: '中部電力 松林/奈良間', deadline: '3/26（木）まで', urgent: false,
     note: '後期講師変更。12/1 or 12/8で回答。4/16前期資料は受領済み',
+    summary: '中部電力の松林さん・奈良間さんより、実践技術者講座の後期日程について連絡がありました。後期は講師が変更となり、候補日として12/1または12/8のどちらかで回答が必要です（回答期隐3/26）。前期（4/16）の講義資料は既に受領済みです。日程の都合を確認し、3/26までに返信してください。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfYBKQAA'
   },
   {
@@ -167,6 +181,7 @@ const tasks = [
     title: 'KSI特許 包括委任状 対応',
     from: 'KSI Partners', deadline: '法定期限 4/20', urgent: false,
     note: '①包括委任状に押印して返送、または②個別委任状内容確認。2/24～保留中',
+    summary: 'KSI Partners（特許事務所）より、特許関連の包括委任状への対応依頼です。選択肢は2つあり、①包括委任状に押印して返送する方法と、②個別委任状の内容を確認して対応する方法です。法定期限が4/20に迫っており、2/24から保留状態が続いています。大学の知財部門とも確認の上、早めに方針を決定してください。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgVx2sQAA'
   },
   {
@@ -174,6 +189,7 @@ const tasks = [
     title: 'MDA研究会 役員会＋講演会 出欠回答',
     from: '池田 達哉', deadline: '3/25（水）14:00', urgent: false,
     note: '⚠ ものづくりコンテスト打合せと同日同時刻で重複',
+    summary: '池田さん（MDA研究会）より、3/25（水）14:00開催の役員会および講演会への出欠確認です。役員として参加が期待されていますが、同日同時刻に渡森先生からのものづくりコンテスト打合せも予定されており、日程が重複しています。どちらに出席するか判断し、欠席する方には代理出席または事前回答の手配が必要です。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGfh4jAQAA'
   },
   {
@@ -181,6 +197,7 @@ const tasks = [
     title: 'ものづくりコンテスト打合せ',
     from: '渡森 和彦', deadline: '3/25（水）14:00', urgent: false,
     note: '研究実験棟231会議室。藤枝北高校 鈴木校長来訪。⚠ MDA役員会と重複',
+    summary: '渡森先生より、ものづくりコンテストに関する打合せの案内です。3/25（水）14:00から研究実験棟231会議室にて開催予定で、藤枝北高校の鈴木校長が来訪されます。高大連携の取り組みに関する重要な打合せですが、MDA研究会役員会と日程が重複しているため、出席の可否と調整が必要です。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGfh5cewAA'
   },
   {
@@ -188,6 +205,7 @@ const tasks = [
     title: 'CMSログインURL ブックマーク変更',
     from: '向島 佑介', deadline: '随時', urgent: false,
     note: '新URL: sist.artis-cms02.jp/main/cms-admin/',
+    summary: '向島さんより、大学CMSのログインURLが変更になったとの連絡です。新しいURLは sist.artis-cms02.jp/main/cms-admin/ に変更されており、旧URLは今後使用できなくなります。ブラウザのブックマークを新URLに更新してください。研究室や学科のWebページ更新時に必要になります。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGfsTNPwAA'
   }
 ];
@@ -247,6 +265,7 @@ function render() {
               <span>👤 ${t.from}</span>
               <span>📝 ${t.note}</span>
             </div>
+            ${t.summary ? `<div class="summary-toggle" onclick="toggleSummary('${t.id}', event)"><span class="arrow">▶</span> メール要約</div><div class="summary-box" id="summary-${t.id}"><div class="summary-content">${t.summary}</div></div>` : ''}
           </div>
           ${t.mailUrl ? `<a class="mail-link" href="${t.mailUrl}" target="_blank" title="元メールを開く">✉</a>` : ''}
           <div class="task-deadline ${t.urgent ? 'urgent' : ''}">
@@ -315,6 +334,19 @@ function checkNow() {
 function closeModal(e) {
   if (e.target === document.getElementById('modalOverlay')) {
     document.getElementById('modalOverlay').classList.remove('active');
+  }
+}
+
+function toggleSummary(id, event) {
+  event.stopPropagation();
+  const toggle = event.currentTarget;
+  const box = document.getElementById('summary-' + id);
+  if (box.classList.contains('open')) {
+    box.classList.remove('open');
+    toggle.classList.remove('open');
+  } else {
+    box.classList.add('open');
+    toggle.classList.add('open');
   }
 }
 
