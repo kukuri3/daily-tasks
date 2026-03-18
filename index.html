@@ -11,6 +11,7 @@
   .header { background: linear-gradient(135deg, #2B4C7E 0%, #1a365d 100%); color: white; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
   .header h1 { font-size: 1.4em; font-weight: 600; }
   .header .date { font-size: 0.95em; opacity: 0.85; }
+    .header .timestamp { font-size: 0.8em; opacity: 0.7; margin-top: 2px; }
   .header-right { display: flex; align-items: center; gap: 12px; }
   .header .progress { font-size: 0.9em; background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 20px; }
 
@@ -90,6 +91,7 @@
   <div>
     <h1>Daily Tasks</h1>
     <div class="date" id="dateDisplay"></div>
+      <div class="timestamp" id="timestampDisplay"></div>
   </div>
   <div class="header-right">
     <div class="progress" id="progressDisplay">0 / 0 完了</div>
@@ -127,6 +129,7 @@ const STORAGE_KEY = 'daily_tasks_state';
 
 // --- TASK DATA (auto-generated section) ---
     const GENERATED_DATE = '2026-03-18';
+    const GENERATED_TIMESTAMP = '2026-03-18 16:55:51';
     const tasks = [
       { id:'t1', priority:'high', title:'吉野君 三者面談の日程調整（青山先生・白畠様）', from:'青山 masahiro', deadline:'3/18〜調整中', urgent:true, note:'青山先生から候補日あり。打合せ日程を確定させる', summary:'吉野君が研究室変更を希望。青山先生から候補日時の回答あり（3/18 10-13時 or 16:30以降、3/19 9-10時、3/25 9-10:30、3/30 9-12時 or 15時以降）。白畠様も交えた打合せと三者面談の日程を確定する必要あり。', mailUrl:'https://outlook.office.com/mail/inbox/id/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgoxAFAAA' },
       { id:'t2', priority:'high', title:'Zhu Ning先生のLINE連絡を確認', from:'Zhu Ning', deadline:'本日', urgent:true, note:'本日10:21のメールで「LINEに連絡した」とのこと', summary:'Zhu Ning先生より「先ほど先生のLINEに連絡しました。ご確認をお願いします。」とのメール。LINEアプリで内容確認してください。', mailUrl:'https://outlook.office.com/mail/inbox/id/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgoxUOwAA' },
@@ -258,6 +261,7 @@ const now = new Date();
 const days = ['日','月','火','水','木','金','土'];
 document.getElementById('dateDisplay').textContent =
   `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${days[now.getDay()]}）`;
+    document.getElementById('timestampDisplay').textContent = '更新: ' + GENERATED_TIMESTAMP;
 
 function checkNow() {
   document.getElementById('modalOverlay').classList.add('active');
