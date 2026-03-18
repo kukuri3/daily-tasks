@@ -33,7 +33,7 @@
   .modal .shortcut { background: #1e293b; color: #67e8f9; font-family: 'SF Mono', 'Menlo', monospace; padding: 8px 14px; border-radius: 6px; font-size: 0.85em; display: inline-block; margin-top: 8px; user-select: all; cursor: pointer; }
   .modal .shortcut:hover { background: #0f172a; }
 
-  .container { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+  .container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
 
   .section { background: white; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
   .section-header { padding: 14px 20px; font-weight: 700; font-size: 0.95em; display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
@@ -47,7 +47,7 @@
   .priority-low .badge { background: #2563EB; }
 
   .task-list { padding: 0; }
-  .task-item { display: flex; align-items: flex-start; padding: 14px 20px; border-top: 1px solid #f0f0f0; transition: background 0.15s; gap: 12px; }
+  .task-item { display: flex; align-items: flex-start; padding: 14px 20px; border-top: 1px solid #f0f0f0; transition: background 0.15s; gap: 12px; flex-wrap: wrap; }
   .task-item:hover { background: #fafbfc; }
   .task-item.done { opacity: 0.45; }
   .task-item.done .task-title { text-decoration: line-through; }
@@ -66,9 +66,9 @@
   .summary-toggle:hover { background: #e2e8f0; }
   .summary-toggle .arrow { display: inline-block; font-size: 0.7em; transition: transform 0.2s; }
   .summary-toggle.open .arrow { transform: rotate(90deg); }
-  .summary-box { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
+  .summary-box { width: 100%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
   .summary-box.open { max-height: 500px; }
-  .summary-content { margin-top: 8px; padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.82em; color: #334155; line-height: 1.65; white-space: pre-wrap; }
+  .summary-content { padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85em; color: #334155; line-height: 1.65; white-space: pre-wrap; }
 
   .mail-link { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background: #f1f5f9; color: #2B4C7E; text-decoration: none; font-size: 16px; transition: all 0.15s; margin-top: 2px; }
   .mail-link:hover { background: #2B4C7E; color: white; transform: scale(1.1); }
@@ -173,7 +173,7 @@ const tasks = [
     title: '実践技術者講座 後期日程調整',
     from: '中部電力 松林/奈良間', deadline: '3/26（木）まで', urgent: false,
     note: '後期講師変更。12/1 or 12/8で回答。4/16前期資料は受領済み',
-    summary: '中部電力の松林さん・奈良間さんより、実践技術者講座の後期日程について連絡がありました。後期は講師が変更となり、候補日として12/1または12/8のどちらかで回答が必要です（回答期隐3/26）。前期（4/16）の講義資料は既に受領済みです。日程の都合を確認し、3/26までに返信してください。',
+    summary: '中部電力の松林さん・奈良間さんより、実践技術者講座の後期日程について連絡がありました。後期は講師が変更となり、候補日として12/1または12/8のどちらかで回答が必要です（回答期限3/26）。前期（4/16）の講義資料は既に受領済みです。日程の都合を確認し、3/26までに返信してください。',
     mailUrl: 'https://outlook.office.com/mail/deeplink/read/AAkALgAAAAAAHYQDEapmEc2byACqAC%2FEWg0AG%2FZG%2F5hHnU6MSHEDAIwZXwAGgfYBKQAA'
   },
   {
@@ -265,12 +265,13 @@ function render() {
               <span>👤 ${t.from}</span>
               <span>📝 ${t.note}</span>
             </div>
-            ${t.summary ? `<div class="summary-toggle" onclick="toggleSummary('${t.id}', event)"><span class="arrow">▶</span> メール要約</div><div class="summary-box" id="summary-${t.id}"><div class="summary-content">${t.summary}</div></div>` : ''}
+            ${t.summary ? `<div class="summary-toggle" onclick="toggleSummary('${t.id}', event)"><span class="arrow">▶</span> メール要約</div>` : ''}
           </div>
           ${t.mailUrl ? `<a class="mail-link" href="${t.mailUrl}" target="_blank" title="元メールを開く">✉</a>` : ''}
           <div class="task-deadline ${t.urgent ? 'urgent' : ''}">
             <div class="dl-date">${t.deadline}</div>
           </div>
+          ${t.summary ? `<div class="summary-box" id="summary-${t.id}"><div class="summary-content">${t.summary}</div></div>` : ''}
         </div>`;
     }
     html += `</div></div>`;
