@@ -76,6 +76,26 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 .footer{text-align:center;padding:20px;font-size:0.8em;color:#94a3b8}
 .reset-btn{background:none;border:1px solid #cbd5e1;padding:4px 14px;border-radius:6px;cursor:pointer;font-size:0.8em;color:#64748b;margin-top:8px}
 .reset-btn:hover{background:#f1f5f9}
+.settings-btn{background:rgba(255,255,255,0.15);border:none;color:white;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1.1em;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.settings-btn:hover{background:rgba(255,255,255,0.25)}
+.sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-left:6px;vertical-align:middle}
+.sync-dot.connected{background:#34D399}
+.sync-dot.disconnected{background:#94a3b8}
+.sync-dot.syncing{background:#FBBF24;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.settings-modal{background:white;border-radius:16px;padding:28px;max-width:440px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.settings-modal h2{font-size:1.1em;margin-bottom:16px;color:#1a1a2e}
+.settings-modal label{display:block;font-size:0.85em;color:#475569;margin-bottom:6px;font-weight:600}
+.settings-modal input{width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:0.9em;font-family:monospace;margin-bottom:12px}
+.settings-modal input:focus{outline:none;border-color:#2B4C7E;box-shadow:0 0 0 3px rgba(43,76,126,0.1)}
+.settings-modal .hint{font-size:0.78em;color:#94a3b8;margin-bottom:16px;line-height:1.5}
+.settings-modal .btn-row{display:flex;gap:8px;justify-content:flex-end}
+.settings-modal .save-btn{background:#2B4C7E;color:white;border:none;padding:8px 20px;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9em}
+.settings-modal .save-btn:hover{background:#1a365d}
+.settings-modal .cancel-btn{background:#f1f5f9;color:#475569;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:0.9em}
+.settings-modal .status-msg{font-size:0.82em;padding:8px 12px;border-radius:6px;margin-bottom:12px;display:none}
+.settings-modal .status-msg.ok{display:block;background:#D1FAE5;color:#065F46}
+.settings-modal .status-msg.err{display:block;background:#FEE2E2;color:#991B1B}
 </style>
 </head>
 <body>
@@ -85,10 +105,11 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 <div class="date" id="dateDisplay"></div>
 </div>
 <div class="header-right">
-<div class="progress" id="progressDisplay">0 / 0 完了</div>
+<div class="progress" id="progressDisplay">0 / 0 完了<span class="sync-dot disconnected" id="syncDot" title="GitHub未接続"></span></div>
 <button class="check-now-btn" onclick="checkNow()">
 <span id="checkIcon">🔄</span> いま確認
 </button>
+<button class="settings-btn" onclick="openSettings()" title="設定">⚙️</button>
 </div>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
@@ -116,6 +137,23 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 <div class="mail-modal-body" id="mailModalBody"></div>
 </div>
 </div>
+<div class="modal-overlay" id="settingsOverlay" onclick="closeSettings(event)">
+<div class="settings-modal" onclick="event.stopPropagation()">
+<h2>⚙️ GitHub同期設定</h2>
+<div class="status-msg" id="settingsStatus"></div>
+<label>GitHub Personal Access Token</label>
+<input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx">
+<div class="hint">
+リポジトリ kukuri3/daily-tasks の Contents 読み書き権限が必要です。<br>
+GitHub → Settings → Developer settings → Fine-grained tokens で作成してください。<br>
+トークンはこのブラウザのlocalStorageにのみ保存されます。
+</div>
+<div class="btn-row">
+<button class="cancel-btn" onclick="document.getElementById('settingsOverlay').classList.remove('active')">キャンセル</button>
+<button class="save-btn" onclick="savePATSetting()">保存・テスト</button>
+</div>
+</div>
+</div>
 <div class="container" id="app"></div>
 <div class="footer">
 Outlook メールから自動抽出 · Powered by Claude<br>
@@ -124,6 +162,74 @@ Outlook メールから自動抽出 · Powered by Claude<br>
 <script>
 const STORAGE_KEY = 'daily_tasks_state';
 const GENERATED_DATE = '2026-03-19';
+const GITHUB_REPO = 'kukuri3/daily-tasks';
+const DONE_FILE = 'done.json';
+const PAT_KEY = 'daily_tasks_pat';
+function getPAT(){return localStorage.getItem(PAT_KEY)||'';}
+function setSyncDot(state){
+const dot=document.getElementById('syncDot');
+dot.className='sync-dot '+state;
+dot.title=state==='connected'?'GitHub同期中':state==='syncing'?'同期中...':'GitHub未接続';
+}
+async function loadFromGitHub(){
+const pat=getPAT();if(!pat)return null;
+try{
+const res=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DONE_FILE}`,{
+headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json'}});
+if(!res.ok)return null;
+const data=await res.json();
+const content=JSON.parse(atob(data.content));
+return{checked:content.checked||{},sha:data.sha};
+}catch{return null;}
+}
+let syncTimer=null;
+function scheduleSyncToGitHub(){
+if(syncTimer)clearTimeout(syncTimer);
+syncTimer=setTimeout(()=>syncToGitHub(checkedState),1500);
+}
+async function syncToGitHub(checked){
+const pat=getPAT();if(!pat)return;
+setSyncDot('syncing');
+try{
+const getRes=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DONE_FILE}`,{
+headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json'}});
+let sha='';
+if(getRes.ok){const d=await getRes.json();sha=d.sha;}
+const content=btoa(JSON.stringify({date:GENERATED_DATE,checked},null,2));
+const body={message:'sync done.json',content};
+if(sha)body.sha=sha;
+const putRes=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DONE_FILE}`,{
+method:'PUT',
+headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+body:JSON.stringify(body)});
+setSyncDot(putRes.ok?'connected':'disconnected');
+}catch{setSyncDot('disconnected');}
+}
+function openSettings(){
+document.getElementById('patInput').value=getPAT();
+document.getElementById('settingsStatus').className='status-msg';
+document.getElementById('settingsOverlay').classList.add('active');
+}
+function closeSettings(e){if(e.target===document.getElementById('settingsOverlay'))document.getElementById('settingsOverlay').classList.remove('active');}
+async function savePATSetting(){
+const pat=document.getElementById('patInput').value.trim();
+const status=document.getElementById('settingsStatus');
+if(!pat){localStorage.removeItem(PAT_KEY);setSyncDot('disconnected');status.className='status-msg ok';status.textContent='トークンを削除しました';return;}
+status.className='status-msg';status.textContent='';
+try{
+const res=await fetch(`https://api.github.com/repos/${GITHUB_REPO}`,{
+headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json'}});
+if(res.ok){
+localStorage.setItem(PAT_KEY,pat);
+setSyncDot('connected');
+status.className='status-msg ok';status.textContent='接続成功！同期が有効になりました。';
+const gh=await loadFromGitHub();
+if(gh&&gh.checked){Object.assign(checkedState,gh.checked);saveState(checkedState);render();}
+}else{
+status.className='status-msg err';status.textContent='認証失敗：トークンを確認してください（'+res.status+'）';
+}
+}catch(e){status.className='status-msg err';status.textContent='接続エラー：'+e.message;}
+}
 const tasks = [
 {
 id:'t1', priority:'high',
@@ -266,6 +372,7 @@ updateProgress();
 function toggle(id){
 checkedState[id]=!checkedState[id];
 saveState(checkedState);
+scheduleSyncToGitHub();
 if(checkedState[id]){
 justCheckedIds[id]=true;
 render();
@@ -289,6 +396,7 @@ function resetAll(){
 if(!confirm('すべてのチェックをリセットしますか？'))return;
 checkedState={};
 saveState(checkedState);
+scheduleSyncToGitHub();
 render();
 }
 function updateProgress(){
@@ -330,6 +438,17 @@ setTimeout(()=>msg.style.opacity='0',1500);
 });
 }
 render();
+(async()=>{
+if(!getPAT())return;
+setSyncDot('syncing');
+const gh=await loadFromGitHub();
+if(gh&&gh.checked&&gh.checked){
+let changed=false;
+for(const[k,v]of Object.entries(gh.checked)){if(v&&!checkedState[k]){checkedState[k]=true;changed=true;}}
+if(changed){saveState(checkedState);render();}
+}
+setSyncDot(getPAT()?'connected':'disconnected');
+})();
 </script>
 </body>
 </html>
