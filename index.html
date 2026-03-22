@@ -57,6 +57,11 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 .summary-box{width:100%;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease}
 .summary-box.open{max-height:800px}
 .summary-content{padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:0.85em;color:#334155;line-height:1.65;white-space:pre-wrap}
+.thread-badge{display:inline-flex;align-items:center;gap:3px;font-size:0.72em;padding:2px 8px;border-radius:10px;font-weight:600;vertical-align:middle;margin-left:6px}
+.thread-badge.open{background:#FEF3C7;color:#92400E}
+.thread-badge.waiting{background:#DBEAFE;color:#1E40AF}
+.thread-badge.resolved{background:#D1FAE5;color:#065F46}
+.related-link{font-size:0.75em;color:#6366F1;cursor:pointer;text-decoration:underline;margin-left:4px}
 .mail-link{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:6px;background:#f1f5f9;color:#2B4C7E;text-decoration:none;font-size:16px;transition:all 0.15s;margin-top:2px;cursor:pointer;border:none}
 .mail-link:hover{background:#2B4C7E;color:white;transform:scale(1.1)}
 .mail-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:flex-start;padding-top:40px}
@@ -142,7 +147,7 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 <div>
 <h1>Daily Tasks</h1>
 <div class="date" id="dateDisplay"></div>
-<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/22 14:30</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/22 14:07</span></div>
+<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/22 15:00</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/22 15:16</span></div>
 </div>
 <div class="header-right">
 <div class="progress" id="progressDisplay">0 / 0 完了<span class="sync-dot disconnected" id="syncDot" title="GitHub未接続"></span></div>
@@ -294,7 +299,12 @@ const tasks = [
     "deadline": "3/25（火）面談前",
     "urgent": true,
     "note": "三者面談前に本人のみと30分〜1時間の事前面談。修士進学の意思を確認。武岡先生と連携",
-    "summary": "武岡先生より、火曜日の三者面談に向けた提案。吉野君がなぜ修士に行きたいかを事前に確認するため、三者面談前に本人のみとの面談（30分〜1時間）を設けたいとのこと。\n\n3パターンを想定：①大学院に行けば就職できると思っている→研究員+就職対策の併行提案、②研究がしたい・修士号が欲しい→学位取得に集中、③就職に落ちたから→①と同様。\n\n今月中に決断できれば授業料等の問題も回避可能。卒論発表や追発表の状況を月曜日に共有してほしいとのこと。"
+    "summary": "武岡先生より、火曜日の三者面談に向けた提案。吉野君がなぜ修士に行きたいかを事前に確認するため、三者面談前に本人のみとの面談（30分〜1時間）を設けたいとのこと。\n\n3パターンを想定：①大学院に行けば就職できると思っている→研究員+就職対策の併行提案、②研究がしたい・修士号が欲しい→学位取得に集中、③就職に落ちたから→①と同様。\n\n今月中に決断できれば授業料等の問題も回避可能。卒論発表や追発表の状況を月曜日に共有してほしいとのこと。",
+    "thread_status": "open",
+    "thread_summary": "3/19に武岡先生から提案メール。3/22に美馬先生が返信済みだが、事前面談の日程調整はまだ未完了。3/25の三者面談までに事前面談を設定する必要あり。",
+    "related_threads": [
+      "t10"
+    ]
   },
   {
     "id": "t2",
@@ -307,7 +317,12 @@ const tasks = [
     "deadline": "3/25（火）めど",
     "urgent": true,
     "note": "後期実践技術者のアサインを決定。学科OneDriveを参照",
-    "summary": "後期の実践技術者講座の担当教員アサインを3/25をめどに決定する必要あり。学科OneDriveに関連資料あり。"
+    "summary": "後期の実践技術者講座の担当教員アサインを3/25をめどに決定する必要あり。学科OneDriveに関連資料あり。",
+    "thread_status": "open",
+    "thread_summary": "自分宛てメモ。深野竹識さん（キャリア支援課）からの実践技術者講座関連メールが複数あり（3/12〜3/13に中部電力・静岡理工科大学間の調整メール4通）。後期のアサインは未決定。",
+    "related_threads": [
+      "t14"
+    ]
   },
   {
     "id": "t3",
@@ -320,46 +335,28 @@ const tasks = [
     "deadline": "次回学科会議まで",
     "urgent": true,
     "note": "2025年度入試AO委員会のメモを分析し、学科会議の議題にする",
-    "summary": "入試AO委員会のメモが送付されており、宿題が出ている。本文を分析して学科会議の議題として準備する必要あり。"
-  },
-  {
-    "id": "t4",
-    "priority": "high",
-    "title": "360度診断 回答完了確認",
-    "from": "牧野 洋之（人事課）/ FosterLink",
-    "fromEmail": "makino-hiroyuki@sist.ac.jp",
-    "mailDate": "2026-03-19",
-    "mailSubject": "360度診断実施における連絡について",
-    "deadline": "年度末（早急）",
-    "urgent": true,
-    "note": "フォスターリンク社からの依頼メールに回答。自由記述欄も記入推奨。回答済みか最終確認",
-    "summary": "法人本部人事課の牧野さんより360度診断の実施連絡。フォスターリンク株式会社（survey@fosterlink.co.jp）より配信されたメールに回答が必要。自由記述欄への記入が強く推奨。誰が何を書いたかは対象者・人事にもわからない仕組み。迷惑メールフォルダ確認も必要。"
-  },
-  {
-    "id": "t5",
-    "priority": "high",
-    "title": "歓送迎会 出欠回答（3/23〆切）",
-    "from": "松野 七重（総務課）",
-    "fromEmail": "matsuno-nanae@sist.ac.jp",
-    "mailDate": "2026-03-18",
-    "mailSubject": "【リマインド】大学の歓送迎会のご案内",
-    "deadline": "3/23（月）まで",
-    "urgent": true,
-    "note": "4/3(金)19時〜 うお鶏 掛川店。会費6,500円。フォームで回答。回答済み確認",
-    "summary": "総務課の松野さんより歓送迎会のリマインド。4月3日（金）19時〜21時、うお鶏 掛川店3階貸切。会費6,500円。3月23日（月）までに出欠フォーム回答が必要。回答がない場合は欠席扱い。"
+    "summary": "入試AO委員会のメモが送付されており、宿題が出ている。本文を分析して学科会議の議題として準備する必要あり。",
+    "thread_status": "open",
+    "thread_summary": "自分宛てメモ。3/11の大学入試広報MLで第7回入学前教育・AO委員会の連絡あり。宿題内容の分析と学科会議議題化が未完了。",
+    "related_threads": []
   },
   {
     "id": "t6",
     "priority": "mid",
     "title": "鈴木製機 共同研究申請書の提出",
     "from": "鈴木 純一郎（鈴木製機会長）",
-    "fromEmail": "",
+    "fromEmail": "suzuki-jun@szk-s.co.jp",
     "mailDate": "2026-03-19",
     "mailSubject": "鈴木製機・鈴木です",
     "deadline": "早めに対応",
     "urgent": false,
-    "note": "来年度の共同研究継続。池田さんに共同研究申請書を提出。昨年の書類が添付済み",
-    "summary": "鈴木製機の鈴木会長より来年度の共同研究継続の連絡。池田さん（社会連携課）に共同研究申請書を提出する必要あり。昨年の書類が添付されているので参考にして作成。"
+    "note": "来年度の共同研究継続。池田さんに共同研究申請書を提出。昨年の書類が添付済み（24.04.01産学共同研究申請書.doc 34KB）",
+    "summary": "鈴木製機の鈴木会長より来年度の共同研究継続の連絡。池田さん（社会連携課）に共同研究申請書を提出する必要あり。昨年の書類が添付されているので参考にして作成。",
+    "thread_status": "open",
+    "thread_summary": "3/19に鈴木会長からメール1通のみ。美馬先生からの返信なし。共同研究申請書の作成・提出が未完了。KSI特許案件（t8）でも鈴木製機は共同出願人。",
+    "related_threads": [
+      "t8"
+    ]
   },
   {
     "id": "t7",
@@ -371,13 +368,18 @@ const tasks = [
     "mailSubject": "2026年度 優秀賞候補者選考について",
     "deadline": "3/30（月）",
     "urgent": false,
-    "note": "電気電子工学科 各学年2名以内を推薦。成績データはフォルダ参照（パスワード別送）",
-    "summary": "学務課の中安さんより優秀賞候補者選考の依頼。電気電子工学科は各学年2名以内の推薦が必要。締切は3/30。推薦書は新年度の学年で記入。成績データは共有フォルダにあり。"
+    "note": "電気電子工学科 各学年2名以内を推薦。成績データはフォルダ参照（パスワード別送）。返信済みマーク有",
+    "summary": "学務課の中安さんより優秀賞候補者選考の依頼。電気電子工学科は各学年2名以内の推薦が必要。締切は3/30。推薦書は新年度の学年で記入。成績データは共有フォルダにあり。",
+    "thread_status": "waiting",
+    "thread_summary": "3/18に依頼→同日にパスワード別送→美馬先生が返信済み（返信済みマーク確認）。ただし推薦書の最終提出（3/30〆切）がまだ必要な可能性あり。土肥先生のQUOカード（t13）と連動。",
+    "related_threads": [
+      "t13"
+    ]
   },
   {
     "id": "t8",
     "priority": "mid",
-    "title": "特許：包括委任状（池田さん決裁待ちフォロー）",
+    "title": "特許：包括委任状（池田さん決裁待ち）",
     "from": "池田 達哉（社会連携課）",
     "fromEmail": "ikeda-tatsuya@sist.ac.jp",
     "mailDate": "2026-03-18",
@@ -385,7 +387,12 @@ const tasks = [
     "deadline": "法定期限 4/20",
     "urgent": false,
     "note": "拒絶査定不服審判（抱え込み型AGV / 特願2024-122160）。池田さんが法人決裁稟議中",
-    "summary": "特許出願（特願2024-122160、抱え込み型AGV）の拒絶査定に対する不服審判手続き。KSIパートナーズ法律特許事務所から包括委任状の対応が必要。池田さんが法人決裁稟議中で決裁待ち。法定期限4/20のためフォローが必要。"
+    "summary": "特許出願（特願2024-122160、抱え込み型AGV）の拒絶査定に対する不服審判手続き。KSIパートナーズ法律特許事務所から包括委任状の対応が必要。美馬先生が3/16に池田さんに転送→池田さんから3/18に「法人決裁稟議中、決裁次第連絡する」と返信。",
+    "thread_status": "waiting",
+    "thread_summary": "2/24にKSIから審判請求書ドラフト+包括委任状送付→3/16にKSIからリマインド→同日美馬先生が池田さんに転送→3/18池田さん「法人決裁稟議中」。出願人は学校法人静岡理工科大学と鈴木製機の共同出願。法定期限4/20に注意。池田さんの決裁完了を待っている状態。",
+    "related_threads": [
+      "t6"
+    ]
   },
   {
     "id": "t9",
@@ -397,8 +404,11 @@ const tasks = [
     "mailSubject": "学園借上げ住宅制度適用期間満了のお知らせ",
     "deadline": "4月末（5/8提出期限）",
     "urgent": false,
-    "note": "令和8年7月7日で適用満了。退居 or 個人契約切替の2択。回答書を松野さんへ提出",
-    "summary": "総務課の松野さん経由で学園借上住宅制度の適用期間満了通知。令和8年7月7日で満了。選択肢は退居または個人契約切替。回答書を4月末までに総務課松野さんへ提出（正式期限5/8）。"
+    "note": "令和8年7月7日で適用満了。退居 or 個人契約切替の2択。回答書を松野さんへ提出。返信済みマーク有",
+    "summary": "総務課の松野さん経由で学園借上住宅制度の適用期間満了通知。令和8年7月7日で満了。選択肢は退居または個人契約切替。回答書を4月末までに総務課松野さんへ提出（正式期限5/8）。",
+    "thread_status": "waiting",
+    "thread_summary": "3/18に通知→美馬先生が返信済み（返信済みマーク確認）。回答書の正式提出（4月末/5月8日〆切）はまだ先。人事課大濱さんからは「持ち家もあるので退居かと思います」とのコメントあり。",
+    "related_threads": []
   },
   {
     "id": "t10",
@@ -411,7 +421,12 @@ const tasks = [
     "deadline": "面談調整中",
     "urgent": false,
     "note": "学籍番号2412025。青山先生が面談日程を調整中。学科長として経過把握",
-    "summary": "助言教員の青山先生より、電気電子工学科の木下一悟くん（学籍番号2412025）の進級相談。Teamsで連絡があり面談日程を調整中。学科長として経過把握が必要。"
+    "summary": "助言教員の青山先生より、電気電子工学科の木下一悟くん（学籍番号2412025）の進級相談。Teamsで連絡があり面談日程を調整中。学科長として経過把握が必要。",
+    "thread_status": "waiting",
+    "thread_summary": "3/16に木下くんからTeamsで進級相談→3/18に青山先生が候補日時を再送（3/19-20）→美馬先生にCC。青山先生が対応中で、面談結果の報告待ち。吉野君（t1）とは別件の学生対応。",
+    "related_threads": [
+      "t1"
+    ]
   },
   {
     "id": "t11",
@@ -424,7 +439,10 @@ const tasks = [
     "deadline": "随時",
     "urgent": false,
     "note": "3/17実施のFD・SD研修アーカイブの視聴確認依頼",
-    "summary": "総務課松野さんより、3/17実施のFD・SD研修「価値の言語化の共有会」のアーカイブ動画の視聴確認依頼。"
+    "summary": "総務課松野さんより、3/17実施のFD・SD研修「価値の言語化の共有会」のアーカイブ動画の視聴確認依頼。",
+    "thread_status": "open",
+    "thread_summary": "3/18に視聴確認依頼。同日、山﨑誠志さん（入試広報）から共有会のアーカイブ資料も配信。3/4に谷川邦さんから教育シンポジウムの案内もあり関連。未視聴の可能性。",
+    "related_threads": []
   },
   {
     "id": "t12",
@@ -437,7 +455,12 @@ const tasks = [
     "deadline": "4月開講前",
     "urgent": false,
     "note": "4/16〜6/4の各木曜日の教室予約について確認",
-    "summary": "学務課の山下さんより、4月16日・23日、5月14日・21日・28日、6月4日の各木曜日のフレッシュマンセミナーの教室予約について連絡。"
+    "summary": "学務課の山下さんより、4月16日・23日、5月14日・21日・28日、6月4日の各木曜日のフレッシュマンセミナーの教室予約について連絡。",
+    "thread_status": "open",
+    "thread_summary": "3/18に依頼1通のみ。返信・確認は未確認。Zhu Ningさん（t17）からも4/9フレッシュマンセミナーの件で連絡あり（3/5）。",
+    "related_threads": [
+      "t17"
+    ]
   },
   {
     "id": "t13",
@@ -449,8 +472,13 @@ const tasks = [
     "mailSubject": "RE: QUOカードの納品のお知らせ",
     "deadline": "4月ガイダンス前",
     "urgent": false,
-    "note": "受賞者リスト確認。QUOカード@10,000×人数分。土肥先生がメールボックスに入れた年月日・氏名の確認も必要",
-    "summary": "総務課杉山あゆみさんよりQUOカード納品連絡。受賞者リストの確認が必要。土肥先生からも学生優秀賞の年月日・氏名確認依頼あり。"
+    "note": "受賞者リスト確認。土肥先生がメールボックスに入れた年月日・氏名の確認も必要",
+    "summary": "総務課杉山あゆみさんよりQUOカード納品連絡。受賞者リストの確認が必要。土肥先生からも学生優秀賞の年月日・氏名確認依頼あり。",
+    "thread_status": "waiting",
+    "thread_summary": "杉山あゆみさんのRE:（返信済みマーク確認）→土肥先生から「1階メールボックスに入れた。年月日・氏名確認をお願い」。確認作業は未完了の可能性。優秀賞推薦（t7）と連動。",
+    "related_threads": [
+      "t7"
+    ]
   },
   {
     "id": "t14",
@@ -463,7 +491,12 @@ const tasks = [
     "deadline": "随時",
     "urgent": false,
     "note": "中部電力キャリア支援課深野様との連携。静岡理工科大学電気電子工学科との協力事項",
-    "summary": "中部電力の松林さん・菜久間さんとの連携案件。静岡理工科大学電気電子工学科に関する協力事項の確認。"
+    "summary": "中部電力の松林さん・菜久間さんとの連携案件。静岡理工科大学電気電子工学科に関する協力事項の確認。",
+    "thread_status": "open",
+    "thread_summary": "3/13に深野竹識さん（キャリア支援課）から中部電力関連のメール4通あり。3/17に松林さんから返信。美馬伸治さん（3/18）からも実践技術者講座のメール。実践技術者講座アサイン（t2）と関連。",
+    "related_threads": [
+      "t2"
+    ]
   },
   {
     "id": "t15",
@@ -476,7 +509,10 @@ const tasks = [
     "deadline": "3/24（月）",
     "urgent": false,
     "note": "車検後の軽微な修理。3/24に対応予定",
-    "summary": "総務課杉山さんより、マイクロバスの車検実施後の軽微な修理について。3/24に対応予定との連絡。"
+    "summary": "総務課杉山さんより、マイクロバスの車検実施後の軽微な修理について。3/24に対応予定との連絡。",
+    "thread_status": "open",
+    "thread_summary": "3/18に通知1通のみ。情報共有目的で特にアクション不要だが、3/24の修理対応を把握しておく必要あり。杉山さんからは3/19-22の工事等対応（別メール）もあり。",
+    "related_threads": []
   },
   {
     "id": "t16",
@@ -489,7 +525,10 @@ const tasks = [
     "deadline": "随時",
     "urgent": false,
     "note": "専門学校5校の教務規程改正。SISPOの本部通知にアップ済み",
-    "summary": "法人本部総務課の山本さんより、規程制定・改正に伴う公示文がSISPO上の本部通知にアップされたとの連絡。学科運営に影響がないかチェック。"
+    "summary": "法人本部総務課の山本さんより、規程制定・改正に伴う公示文がSISPO上の本部通知にアップされたとの連絡。学科運営に影響がないかチェック。",
+    "thread_status": "open",
+    "thread_summary": "3/19に通知1通のみ。情報確認のみで返信不要。SISPOで確認すれば完了。",
+    "related_threads": []
   },
   {
     "id": "t17",
@@ -502,7 +541,12 @@ const tasks = [
     "deadline": "随時",
     "urgent": false,
     "note": "LINEで連絡あり。確認が必要",
-    "summary": "十朱先生よりLINEで連絡をしたとのメール。内容確認が必要。"
+    "summary": "十朱先生よりLINEで連絡をしたとのメール。内容確認が必要。",
+    "thread_status": "open",
+    "thread_summary": "3/18にメール1通のみ。LINEでの連絡内容をLINEアプリで確認する必要あり。また3/5に4月9日フレッシュマンセミナーの件でも連絡あり（t12と関連）。",
+    "related_threads": [
+      "t12"
+    ]
   },
   {
     "id": "t18",
@@ -515,10 +559,30 @@ const tasks = [
     "deadline": "随時",
     "urgent": false,
     "note": "電気電子工学科教員向け。図書館購入図書の選書協力依頼",
-    "summary": "図書館より2月新刊の選書依頼。電気電子工学科教員に図書購入の選書協力をお願いする内容。"
+    "summary": "図書館より2月新刊の選書依頼。電気電子工学科教員に図書購入の選書協力をお願いする内容。",
+    "thread_status": "open",
+    "thread_summary": "3/18に依頼1通のみ。選書希望があれば図書館に回答。なければスキップ可。",
+    "related_threads": []
   }
 ];
-const completedTasks = [];
+const completedTasks = [
+  {
+    "id": "t4",
+    "title": "360度診断 回答完了確認",
+    "from": "牧野 洋之（人事課）/ FosterLink",
+    "thread_status": "resolved",
+    "thread_summary": "3/18にFosterLinkから診断メール配信→3/19に牧野さんからリマインド→3/22に美馬先生が回答完了を報告→同日、牧野さんからお礼返信。スレッド完結。",
+    "summary": "法人本部人事課の牧野さんより360度診断の実施連絡。フォスターリンク株式会社（survey@fosterlink.co.jp）より配信されたメールに回答が必要。自由記述欄への記入が強く推奨。"
+  },
+  {
+    "id": "t5",
+    "title": "歓送迎会 出欠回答（3/23〆切）",
+    "from": "松野 七重（総務課）",
+    "thread_status": "resolved",
+    "thread_summary": "3/16に初回案内→3/18にリマインド→3/22 13:44に美馬先生が返信（フォーム回答済み）。スレッド完結。",
+    "summary": "総務課の松野さんより歓送迎会のリマインド。4月3日（金）19時〜21時、うお鶏 掛川店3階貸切。会費6,500円。3月23日（月）までに出欠フォーム回答が必要。"
+  }
+];
 const PURGE_KEY = 'daily_tasks_purged';
 function loadPurged(){try{return JSON.parse(localStorage.getItem(PURGE_KEY)||'{}');}catch{return{};}}
 function savePurged(p){localStorage.setItem(PURGE_KEY,JSON.stringify(p));}
@@ -550,17 +614,20 @@ html+=`
 <div class="task-item ${done?'done':''}" data-id="${t.id}">
 <div class="task-check ${done?'checked':''}" onclick="toggle('${t.id}')"></div>
 <div class="task-body">
-<div class="task-title">${t.title}</div>
+<div class="task-title">${t.title}${t.thread_status?`<span class="thread-badge ${t.thread_status}">${threadLabel(t.thread_status)}</span>`:''}</div>
 <div class="task-meta">
 <span>👤 ${t.from}</span>
 <span>📝 ${t.note}</span>
+${t.related_threads&&t.related_threads.length?`<span>🔗 関連: ${t.related_threads.map(r=>`<span class="related-link" onclick="scrollToTask('${r}')">${r}</span>`).join(' ')}</span>`:''}
 </div>
+${t.thread_summary?`<div class="summary-toggle" onclick="toggleSummary('${t.id}_thread',event)"><span class="arrow">▶</span> スレッド経緯</div>`:''}
 ${t.summary?`<div class="summary-toggle" onclick="toggleSummary('${t.id}',event)"><span class="arrow">▶</span> メール要約</div>`:''}
 </div>
 ${t.summary?`<button class="mail-link" onclick="showMailModal('${t.id}',event)" title="元メールを表示">✉</button>`:''}
 <div class="task-deadline ${t.urgent?'urgent':''}">
 <div class="dl-date">${t.deadline}</div>
 </div>
+${t.thread_summary?`<div class="summary-box" id="summary-${t.id}_thread"><div class="summary-content" style="border-left:3px solid #6366F1;background:#f5f3ff">📋 ${t.thread_summary}</div></div>`:''}
 ${t.summary?`<div class="summary-box" id="summary-${t.id}"><div class="summary-content">${t.summary}</div></div>`:''}
 </div>`;
 }
@@ -617,6 +684,11 @@ const days=['日','月','火','水','木','金','土'];
 document.getElementById('dateDisplay').textContent=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${days[now.getDay()]}）`;
 function checkNow(){document.getElementById('modalOverlay').classList.add('active');}
 function closeModal(e){if(e.target===document.getElementById('modalOverlay')){document.getElementById('modalOverlay').classList.remove('active');}}
+function threadLabel(s){return s==='open'?'📨 未対応':s==='waiting'?'⏳ 返答待ち':s==='resolved'?'✅ 完結':s;}
+function scrollToTask(id){
+const el=document.querySelector(`.task-item[data-id="${id}"]`);
+if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.background='#EEF2FF';setTimeout(()=>el.style.background='',2000);}
+}
 function toggleSummary(id,event){
 event.stopPropagation();
 const toggle=event.currentTarget;
