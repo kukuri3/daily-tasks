@@ -116,6 +116,12 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 .purge-check:hover{border-color:#DC2626}
 .purge-check.purged{background:#DC2626;border-color:#DC2626}
 .purge-check.purged::after{content:'✕';color:white;font-size:11px;font-weight:700}
+.undo-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:white;padding:12px 20px;border-radius:10px;font-size:0.9em;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,0.3);z-index:2000;animation:slideUp 0.3s ease}
+.undo-toast .undo-btn{background:#F59E0B;color:#1a1a2e;border:none;padding:6px 16px;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.9em}
+.undo-toast .undo-btn:hover{background:#FBBF24}
+.undo-toast .undo-timer{width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden}
+.undo-toast .undo-timer-bar{height:100%;background:#F59E0B;transition:width linear}
+@keyframes slideUp{from{transform:translateX(-50%) translateY(20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
 @media(max-width:640px){
 .header{padding:14px 16px;flex-direction:column;align-items:flex-start;gap:10px}
 .header-right{width:100%;justify-content:space-between}
@@ -147,7 +153,7 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 <div>
 <h1>Daily Tasks</h1>
 <div class="date" id="dateDisplay"></div>
-<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/24 00:15</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/24 08:00</span></div>
+<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/24 00:15</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/24 08:32</span></div>
 </div>
 <div class="header-right">
 <div class="progress" id="progressDisplay">0 / 0 完了<span class="sync-dot disconnected" id="syncDot" title="GitHub未接続"></span></div>
@@ -299,7 +305,7 @@ const tasks = [
     "deadline": "3/24（月）14:00 プレ面談 → 3/25（火）三者面談",
     "urgent": true,
     "note": "本日14:00に吉野君プレ面談。武岡先生と連携。修士進学の意思確認。3/23 6:30に武岡先生に返信済み",
-    "summary": "武岡先生より三者面談前の事前面談提案。吉野君の修士進学意思を3パターンで整理。今月中に決断で授業料回避可能。",
+    "summary": "武岡先生より、火曜日（3/25）の三者面談に先立ち、本人のみ対美馬先生・武岡先生の事前面談（30分〜1時間）を提案。\n\n■確認すべき点：吉野君がなぜ修士に行きたいか\n■想定3パターン：\n①就職できると思った→研究員+就職対策併行\n②研究したい・修士号がほしい→学位取得に集中\n③就職落ちた→①と同様\n■武岡先生の懸念：卒論発表・追発表の状況を把握していない。月曜日に共有してほしい\n■重要：今月中に決断すれば授業料問題を回避可能",
     "thread_status": "waiting",
     "thread_summary": "3/19 武岡先生提案→3/22 美馬先生返信→3/22 17:30再返信（TeamsChat連絡済み）→3/23 6:30 美馬先生が追加返信。本日プレ面談、明日三者面談。",
     "related_threads": []
@@ -315,7 +321,7 @@ const tasks = [
     "deadline": "3/25（火）めど",
     "urgent": true,
     "note": "後期実践技術者のアサインを決定。学科OneDrive参照。深野さんに返信済み",
-    "summary": "後期の実践技術者講座の担当教員アサインを3/25をめどに決定。",
+    "summary": "後期の実践技術者講座の担当教員アサインを3/25をめどに決定する必要あり。\n\n■やること：学科OneDriveの資料を確認し、各回の担当教員を割り当て\n■関連：深野さん（キャリア支援課）に2回返信済み。中部電力（松林さん・菜久間さん）との連携が実践技術者講座に関わる可能性\n■iLearnの更新も必要（t22参照）",
     "thread_status": "open",
     "thread_summary": "3/18自分メモ→3/12 深野さんへ2回返信済み。中部電力との連携（t14）も関連。アサイン未決定。",
     "related_threads": [
@@ -334,7 +340,7 @@ const tasks = [
     "deadline": "3/23 学科会議で議題化済み→残件確認",
     "urgent": true,
     "note": "3/23 14:00の学科会議（第22回）で議題化。総合型選抜試験問題制作について4月までに意見集約",
-    "summary": "入試AO委員会のメモから宿題を議題化。学科毎vs学系毎の募集確認、試験問題制作方針等。",
+    "summary": "3/23の学科会議（第22回）で議題化済み。以下の宿題が残っている可能性：\n\n■確認事項：\n①総合型選抜2027年度：筆記試験（数学Ⅰ・Ⅱ）変更の有無\n②全選考の募集人数確認（3/13現在：手続済39名/見込最大46名/定員60名）\n③実施時期（最早期・前期・中期・後期）の確認\n④共通テスト利用Cの教科・科目統一の学科意見\n⑤指定校推薦：共通出願枠設置による推薦枠数増加について学科意見\n⑥総合型選抜の学力試験問題制作方針を4月入試AOまでに集約\n■学科毎vs学系毎の募集体制の確認（t23）",
     "thread_status": "waiting",
     "thread_summary": "3/18メモ→3/23 8:08再リマインド→3/23 8:18学科会議案内送信→3/23 14:00学科会議実施。残件の有無を確認。",
     "related_threads": [
@@ -354,7 +360,7 @@ const tasks = [
     "deadline": "早めに対応",
     "urgent": false,
     "note": "3/23 10:16に返信→鈴木さん「内容了解」返信あり。申請書作成は未着手",
-    "summary": "鈴木製機との来年度共同研究継続。池田さんに申請書提出が必要。",
+    "summary": "鈴木製機の鈴木会長から来年度の共同研究継続の申し出あり。今年度と同条件で合意済み。\n\n■残タスク：池田さん（社会連携課）に「共同研究申請書」を提出\n■参考：昨年の申請書が鈴木さんからの添付ファイルにあり\n■関連：同社は特許案件（t8: 抱え込み型AGV、特願2024-122160）の共同出願人でもある",
     "thread_status": "waiting",
     "thread_summary": "3/19鈴木会長依頼→3/23美馬返信→3/23鈴木「内容了解」返信。方針合意済み。池田さんへの申請書提出が残タスク。",
     "related_threads": [
@@ -372,7 +378,7 @@ const tasks = [
     "deadline": "法定期限 4/20",
     "urgent": false,
     "note": "3/16に池田さんに転送済み。法人決裁稟議中",
-    "summary": "特許（特願2024-122160、抱え込み型AGV）の拒絶査定不服審判。",
+    "summary": "特許出願（特願2024-122160、抱え込み型AGV）の拒絶査定に対する不服審判手続き。\n\n■状況：KSIパートナーズ法律特許事務所から包括委任状への押印返送が必要\n■経緯：3/9 KSI送付→3/16リマインド→美馬先生が池田さん（社会連携課）に転送→3/18池田さん「法人決裁稟議を上げている。決裁になり次第連絡」\n■出願人：学校法人静岡理工科大学＋鈴木製機株式会社（共同出願）\n■法定期限：4/20 ← 要フォロー\n■選択肢：①包括委任状への押印返送 or ②個別委任状の内容確認",
     "thread_status": "waiting",
     "thread_summary": "3/9 KSI送付→3/16リマインド→3/16美馬→池田転送→3/18池田「決裁稟議中」。法定期限4/20。",
     "related_threads": [
@@ -440,7 +446,7 @@ const tasks = [
     "deadline": "4月ガイダンス前",
     "urgent": false,
     "note": "杉山さん「納品されたら連絡する」3/23。土肥先生に年月日・氏名確認も3/23送信済み",
-    "summary": "QUOカード（@10,000×4、@5,000×2、@3,000×9）の納品待ち。",
+    "summary": "4月ガイダンスでの学生優秀賞表彰用QUOカードの手配。\n\n■数量：@10,000×4枚、@5,000×2枚、@3,000×9枚（合計77,000円）\n■予算：学科（学系）運営費\n■納品：月末納品、納品書・請求書は4/1付\n■状況：3/23杉山さんから「納品されたら連絡する」→待ち\n■別件：土肥先生に年月日・氏名確認を3/23送信済み（メールボックスに入れたとのこと）",
     "thread_status": "waiting",
     "thread_summary": "3/3最初の納品→3/18再注文→3/21枚数訂正→3/23杉山「納品されたら連絡」。3/23美馬→土肥先生に確認送信。",
     "related_threads": []
@@ -556,7 +562,7 @@ const tasks = [
     "deadline": "4月開講前",
     "urgent": true,
     "note": "①コンピュータ入門 日程確認 ②実践技術者講座 iLearn更新 ③メカトロ基礎実験 学生振り分け",
-    "summary": "来年度の授業準備3件。",
+    "summary": "4月の新学期開講前に完了すべき授業準備タスク3件：\n\n①コンピュータ入門：開講日程の確認。時間割との整合性チェック\n②実践技術者講座：iLearnの授業ページを来年度版に更新。担当教員アサイン（t2）と連動\n③メカトロニクス基礎実験：履修学生の実験班振り分け。学籍データから班分け表を作成",
     "thread_status": "open",
     "thread_summary": "3/23 8:54 自分メモ送信。",
     "related_threads": [
@@ -593,7 +599,7 @@ const tasks = [
     "deadline": "次回学科会議以降",
     "urgent": false,
     "note": "①アンケート変更伝達 ②Pickup講座選出 ③地場産業連携科目検討",
-    "summary": "評議会からの宿題3件。",
+    "summary": "評議会報告に基づく学科対応が必要な宿題3件：\n\n①学科アンケート：新入生アンケートの学科設問（毎年2問程度）の見直し結果を伝達\n②推しPickup講座：高校訪問用の講師リストから電気電子の「推し講座」を2〜3件選出。教育委員会経由で県下の高校に配布される資料用\n③地場産業連携：地場産業から課題を受けて単位化できそうな科目があれば提案",
     "thread_status": "open",
     "thread_summary": "3/23 7:43メモ送信。",
     "related_threads": [
@@ -788,13 +794,18 @@ app.innerHTML=html;
 updateProgress();
 renderDone();
 }
+let undoTimer=null;
+let undoToastEl=null;
 function toggle(id){
 checkedState[id]=!checkedState[id];
 saveState(checkedState);
 scheduleSyncToGitHub();
 if(checkedState[id]){
+const t=tasks.find(x=>x.id===id);
+const title=t?t.title:id;
 justCheckedIds[id]=true;
 render();
+showUndoToast(id,title);
 setTimeout(()=>{
 const el=document.querySelector(`.task-item[data-id="${id}"]`);
 if(el){
@@ -805,11 +816,36 @@ el.style.padding='0 20px';
 el.style.overflow='hidden';
 setTimeout(()=>{delete justCheckedIds[id];render();},450);
 }
-},600);
+},5000);
 }else{
 delete justCheckedIds[id];
 render();
 }
+}
+function showUndoToast(id,title){
+dismissUndoToast();
+const toast=document.createElement('div');
+toast.className='undo-toast';
+toast.innerHTML=`<span>✅ 「${title.substring(0,20)}${title.length>20?'...':''}」を完了</span><button class="undo-btn" onclick="undoCheck('${id}')">取り消し</button><div class="undo-timer"><div class="undo-timer-bar" id="undoBar"></div></div>`;
+document.body.appendChild(toast);
+undoToastEl=toast;
+requestAnimationFrame(()=>{
+const bar=document.getElementById('undoBar');
+if(bar){bar.style.width='100%';requestAnimationFrame(()=>{bar.style.width='0%';bar.style.transitionDuration='5s';});}
+});
+undoTimer=setTimeout(()=>dismissUndoToast(),5000);
+}
+function undoCheck(id){
+dismissUndoToast();
+checkedState[id]=false;
+delete justCheckedIds[id];
+saveState(checkedState);
+scheduleSyncToGitHub();
+render();
+}
+function dismissUndoToast(){
+if(undoTimer){clearTimeout(undoTimer);undoTimer=null;}
+if(undoToastEl){undoToastEl.remove();undoToastEl=null;}
 }
 function resetAll(){
 if(!confirm('すべてのチェックをリセットしますか？'))return;
