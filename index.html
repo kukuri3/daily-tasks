@@ -153,7 +153,7 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 <div>
 <h1>Daily Tasks</h1>
 <div class="date" id="dateDisplay"></div>
-<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/24 08:30</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/24 08:58</span></div>
+<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/24 09:30</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/24 09:25</span></div>
 </div>
 <div class="header-right">
 <div class="progress" id="progressDisplay">0 / 0 完了<span class="sync-dot disconnected" id="syncDot" title="GitHub未接続"></span></div>
@@ -306,8 +306,8 @@ const tasks = [
     "urgent": true,
     "note": "本日14:00に吉野君プレ面談。武岡先生と連携。修士進学の意思確認。3/23 6:30に武岡先生に返信済み",
     "summary": "武岡先生より、火曜日（3/25）の三者面談に先立ち、本人のみ対美馬先生・武岡先生の事前面談（30分〜1時間）を提案。\n\n■確認すべき点：吉野君がなぜ修士に行きたいか\n■想定3パターン：\n①就職できると思った→研究員+就職対策併行\n②研究したい・修士号がほしい→学位取得に集中\n③就職落ちた→①と同様\n■武岡先生の懸念：卒論発表・追発表の状況を把握していない。月曜日に共有してほしい\n■重要：今月中に決断すれば授業料問題を回避可能",
-    "thread_status": "waiting",
-    "thread_summary": "3/19 武岡先生提案→3/22 美馬先生返信→3/22 17:30再返信（TeamsChat連絡済み）→3/23 6:30 美馬先生が追加返信。本日プレ面談、明日三者面談。",
+    "thread_status": "open",
+    "thread_summary": "3/19 武岡先生提案→3/22 美馬先生返信→3/22 17:30再返信→3/23 6:30追加返信。本日プレ面談、明日三者面談。面談結果を待つ段階。",
     "related_threads": []
   },
   {
@@ -323,7 +323,7 @@ const tasks = [
     "note": "後期実践技術者のアサインを決定。学科OneDrive参照。深野さんに返信済み",
     "summary": "後期の実践技術者講座の担当教員アサインを3/25をめどに決定する必要あり。\n\n■やること：学科OneDriveの資料を確認し、各回の担当教員を割り当て\n■関連：深野さん（キャリア支援課）に2回返信済み。中部電力（松林さん・菜久間さん）との連携が実践技術者講座に関わる可能性\n■iLearnの更新も必要（t22参照）",
     "thread_status": "open",
-    "thread_summary": "3/18自分メモ→3/12 深野さんへ2回返信済み。中部電力との連携（t14）も関連。アサイン未決定。",
+    "thread_summary": "3/18自分メモ→3/12深野さんへ返信済み。中部電力との連携（t14）も関連。アサイン未決定。",
     "related_threads": [
       "t14",
       "t22"
@@ -332,21 +332,39 @@ const tasks = [
   {
     "id": "t3",
     "priority": "high",
-    "title": "入試AO委員会 宿題→学科会議議題（3/23実施済み？）",
+    "title": "入試AO委員会 宿題→本日学科会議で議題化",
     "from": "美馬 一博（自分メモ）",
     "fromEmail": "mima.kazuhiro@sist.ac.jp",
     "mailDate": "2026-03-18",
     "mailSubject": "入試AO委員会宿題",
-    "deadline": "本日 3/24 14:00 学科会議（本井先生欠席連絡あり）",
+    "deadline": "本日 3/24 14:00 学科会議（本井先生欠席）",
     "urgent": true,
     "note": "本日14:00の学科会議（第22回）で議題化。本井先生は振替休日で欠席。総合型選抜試験問題制作について4月までに意見集約",
-    "summary": "3/23の学科会議（第22回）で議題化済み。以下の宿題が残っている可能性：\n\n■確認事項：\n①総合型選抜2027年度：筆記試験（数学Ⅰ・Ⅱ）変更の有無\n②全選考の募集人数確認（3/13現在：手続済39名/見込最大46名/定員60名）\n③実施時期（最早期・前期・中期・後期）の確認\n④共通テスト利用Cの教科・科目統一の学科意見\n⑤指定校推薦：共通出願枠設置による推薦枠数増加について学科意見\n⑥総合型選抜の学力試験問題制作方針を4月入試AOまでに集約\n■学科毎vs学系毎の募集体制の確認（t23）",
-    "thread_status": "waiting",
-    "thread_summary": "3/18メモ→3/23 8:08再リマインド→3/23 8:18学科会議案内送信→3/23 14:00学科会議実施。残件の有無を確認。",
+    "summary": "本日の学科会議（第22回）で議題化。以下の宿題：\n\n■確認事項：\n①総合型選抜2027年度：筆記試験（数学Ⅰ・Ⅱ）変更の有無\n②全選考の募集人数確認（3/13現在：手続済39名/見込最大46名/定員60名）\n③実施時期の確認\n④共通テスト利用Cの教科・科目統一の学科意見\n⑤指定校推薦：共通出願枠による推薦枠数増加について学科意見\n⑥学力試験問題制作方針を4月入試AOまでに集約",
+    "thread_status": "open",
+    "thread_summary": "3/18メモ→3/23リマインド→3/23学科会議案内送信→本日14:00学科会議。",
     "related_threads": [
-      "t19",
       "t23",
       "t24"
+    ]
+  },
+  {
+    "id": "t22",
+    "priority": "high",
+    "title": "来年度授業準備（コンピュータ入門・実践技術者・メカトロ基礎実験）",
+    "from": "美馬 一博（自分メモ）",
+    "fromEmail": "mima.kazuhiro@sist.ac.jp",
+    "mailDate": "2026-03-23",
+    "mailSubject": "来年度授業準備",
+    "deadline": "4月開講前（メカトロ準備3/27 17:00確定）",
+    "urgent": true,
+    "note": "①コンピュータ入門 日程確認 ②実践技術者講座 iLearn更新 ③メカトロ基礎実験 3/27(金)17:00〜準備（十朱・飛田・中田先生参集）",
+    "summary": "4月の新学期開講前に完了すべき授業準備タスク3件：\n\n①コンピュータ入門：開講日程の確認。時間割との整合性チェック\n②実践技術者講座：iLearnの授業ページを来年度版に更新。担当教員アサイン（t2）と連動\n③メカトロニクス基礎実験：3/27(金)17:00〜 202実験室で準備作業（十朱先生「承知しました」3/24返信）",
+    "thread_status": "open",
+    "thread_summary": "3/23メモ→3/18メカトロ調整さん送信→3/24 0:11 3/27 17:00確定通知→3/24 9:08 十朱先生「承知しました」。",
+    "related_threads": [
+      "t2",
+      "t12"
     ]
   },
   {
@@ -359,9 +377,9 @@ const tasks = [
     "mailSubject": "鈴木製機・鈴木です",
     "deadline": "早めに対応",
     "urgent": false,
-    "note": "3/23 10:16に返信→鈴木さん「内容了解」返信あり。申請書作成は未着手",
+    "note": "3/23美馬返信→鈴木さん「内容了解」(月16:52)。申請書作成は未着手",
     "summary": "鈴木製機の鈴木会長から来年度の共同研究継続の申し出あり。今年度と同条件で合意済み。\n\n■残タスク：池田さん（社会連携課）に「共同研究申請書」を提出\n■参考：昨年の申請書が鈴木さんからの添付ファイルにあり\n■関連：同社は特許案件（t8: 抱え込み型AGV、特願2024-122160）の共同出願人でもある",
-    "thread_status": "waiting",
+    "thread_status": "open",
     "thread_summary": "3/19鈴木会長依頼→3/23美馬返信→3/23鈴木「内容了解」返信。方針合意済み。池田さんへの申請書提出が残タスク。",
     "related_threads": [
       "t8"
@@ -378,7 +396,7 @@ const tasks = [
     "deadline": "法定期限 4/20",
     "urgent": false,
     "note": "3/16に池田さんに転送済み。法人決裁稟議中",
-    "summary": "特許出願（特願2024-122160、抱え込み型AGV）の拒絶査定に対する不服審判手続き。\n\n■状況：KSIパートナーズ法律特許事務所から包括委任状への押印返送が必要\n■経緯：3/9 KSI送付→3/16リマインド→美馬先生が池田さん（社会連携課）に転送→3/18池田さん「法人決裁稟議を上げている。決裁になり次第連絡」\n■出願人：学校法人静岡理工科大学＋鈴木製機株式会社（共同出願）\n■法定期限：4/20 ← 要フォロー\n■選択肢：①包括委任状への押印返送 or ②個別委任状の内容確認",
+    "summary": "特許出願（特願2024-122160、抱え込み型AGV）の拒絶査定に対する不服審判手続き。\n\n■状況：KSIパートナーズ法律特許事務所から包括委任状への押印返送が必要\n■経緯：3/9 KSI送付→3/16リマインド→美馬先生が池田さんに転送→3/18池田さん「法人決裁稟議中」\n■出願人：静岡理工科大学＋鈴木製機（共同出願）\n■法定期限：4/20 ← 要フォロー",
     "thread_status": "waiting",
     "thread_summary": "3/9 KSI送付→3/16リマインド→3/16美馬→池田転送→3/18池田「決裁稟議中」。法定期限4/20。",
     "related_threads": [
@@ -396,44 +414,10 @@ const tasks = [
     "deadline": "面談結果待ち",
     "urgent": false,
     "note": "青山先生が面談調整中。学科長として経過把握",
-    "summary": "木下一悟くん（2412025）の進級相談。",
+    "summary": "木下一悟くん（2412025）の進級相談。青山先生が面談日程を調整中。",
     "thread_status": "waiting",
     "thread_summary": "3/16 Teams連絡→3/18青山先生候補日時→3/18美馬返信。面談結果待ち。",
     "related_threads": []
-  },
-  {
-    "id": "t11",
-    "priority": "low",
-    "title": "FD・SD研修アーカイブ視聴",
-    "from": "松野 七重（総務課）",
-    "fromEmail": "matsuno-nanae@sist.ac.jp",
-    "mailDate": "2026-03-18",
-    "mailSubject": "FD・SD研修アーカイブについて",
-    "deadline": "随時",
-    "urgent": false,
-    "note": "未視聴。返信なし",
-    "summary": "3/17実施のFD・SD研修アーカイブ視聴依頼。",
-    "thread_status": "open",
-    "thread_summary": "3/18依頼。返信なし。未視聴の可能性。",
-    "related_threads": []
-  },
-  {
-    "id": "t12",
-    "priority": "mid",
-    "title": "フレッシュマンセミナー教室予約",
-    "from": "山下 久美子（学務課）",
-    "fromEmail": "",
-    "mailDate": "2026-03-18",
-    "mailSubject": "フレッシュマンセミナー（木曜日）教室予約について",
-    "deadline": "4月開講前",
-    "urgent": false,
-    "note": "4/16〜6/4各木曜日の教室予約。返信なし",
-    "summary": "学務課からのフレッシュマンセミナー教室予約連絡。",
-    "thread_status": "open",
-    "thread_summary": "3/18依頼1通。返信なし。",
-    "related_threads": [
-      "t22"
-    ]
   },
   {
     "id": "t13",
@@ -445,10 +429,10 @@ const tasks = [
     "mailSubject": "RE: QUOカードの納品のお知らせ",
     "deadline": "4月ガイダンス前",
     "urgent": false,
-    "note": "杉山さん「納品されたら連絡する」3/23。土肥先生に年月日・氏名確認も3/23送信済み",
-    "summary": "4月ガイダンスでの学生優秀賞表彰用QUOカードの手配。\n\n■数量：@10,000×4枚、@5,000×2枚、@3,000×9枚（合計77,000円）\n■予算：学科（学系）運営費\n■納品：月末納品、納品書・請求書は4/1付\n■状況：3/23杉山さんから「納品されたら連絡する」→待ち\n■別件：土肥先生に年月日・氏名確認を3/23送信済み（メールボックスに入れたとのこと）",
+    "note": "3/23杉山さん「納品されたら連絡する」。土肥先生に確認送信済み",
+    "summary": "4月ガイダンスでの学生優秀賞表彰用QUOカードの手配。\n\n■数量：@10,000×4枚、@5,000×2枚、@3,000×9枚（合計77,000円）\n■状況：杉山さんから「納品されたら連絡する」→待ち",
     "thread_status": "waiting",
-    "thread_summary": "3/3最初の納品→3/18再注文→3/21枚数訂正→3/23杉山「納品されたら連絡」。3/23美馬→土肥先生に確認送信。",
+    "thread_summary": "3/3最初の納品→3/18再注文→3/21枚数訂正→3/23杉山「納品されたら連絡」。",
     "related_threads": []
   },
   {
@@ -462,12 +446,146 @@ const tasks = [
     "deadline": "随時",
     "urgent": false,
     "note": "3/23 9:00と8:56に中部電力関係者に返信済み",
-    "summary": "中部電力との実践技術者講座連携。",
+    "summary": "中部電力との実践技術者講座連携。松林さん・菜久間さんに返信済み。",
     "thread_status": "waiting",
-    "thread_summary": "3/12深野さん経由→3/13松林さんメール→3/23美馬が中部電力2名に返信。連携調整中。",
+    "thread_summary": "3/12深野さん経由→3/13松林さんメール→3/23美馬が中部電力2名に返信。返答待ち。",
     "related_threads": [
       "t2"
     ]
+  },
+  {
+    "id": "t26",
+    "priority": "mid",
+    "title": "五十嵐 キャリア・ナビゲーション Zoom打合せ（3/26 14:00確定）",
+    "from": "五十嵐 豊",
+    "fromEmail": "y.igarashi@career-navigation.co.jp",
+    "mailDate": "2026-03-24",
+    "mailSubject": "Re: 電気電子分野のキャリア支援について",
+    "deadline": "3/26（木）14:00 Zoom",
+    "urgent": false,
+    "note": "Zoom ID: 699 514 5760 / パスコード: ED34N5。事前準備：進路傾向・課題感、企業との接点について",
+    "summary": "キャリア・ナビゲーション五十嵐さんとのZoom打合せが3/26(木)14:00に確定。\n\n■Zoom: https://us06web.zoom.us/j/6995145760 (ID: 699 514 5760 / PW: ED34N5)\n■事前に考えておくこと：\n・電気電子分野学生の院進学も含めた進路傾向や課題感\n・企業との接点やキャリア支援において感じられている点\n■事前準備は特段不要とのこと",
+    "thread_status": "open",
+    "thread_summary": "3/23五十嵐提案→3/24美馬「3/26 14:00可能」返信→3/24五十嵐「ぜひお願い」+Zoom情報送付。確定。",
+    "related_threads": []
+  },
+  {
+    "id": "t27",
+    "priority": "mid",
+    "title": "MDA研究会 役員会・講演会（3/25）",
+    "from": "池田 達哉（社会連携課）",
+    "fromEmail": "",
+    "mailDate": "2026-03-23",
+    "mailSubject": "【リマインド】MDA研究会_役員会等の開催",
+    "deadline": "3/25（火）",
+    "urgent": false,
+    "note": "明日3/25のMDA研究会最後の役員会・講演会",
+    "summary": "MDA研究会の役員会・講演会が3/25に開催。リマインド。",
+    "thread_status": "open",
+    "thread_summary": "3/23 10:50リマインド受信。",
+    "related_threads": []
+  },
+  {
+    "id": "t25",
+    "priority": "mid",
+    "title": "村上裕二先生 電気回路学１の成績提供",
+    "from": "村上 裕二",
+    "fromEmail": "",
+    "mailDate": "2026-03-23",
+    "mailSubject": "電気回路学１の成績",
+    "deadline": "早めに",
+    "urgent": false,
+    "note": "電磁気学１のクラス分けに使用。成績データを提供する",
+    "summary": "村上先生から電気回路学１の成績データ提供依頼。電磁気学１のクラス分け用。",
+    "thread_status": "open",
+    "thread_summary": "3/23 18:09受信。返信なし。",
+    "related_threads": []
+  },
+  {
+    "id": "t12",
+    "priority": "mid",
+    "title": "フレッシュマンセミナー教室予約",
+    "from": "山下 久美子（学務課）",
+    "fromEmail": "",
+    "mailDate": "2026-03-18",
+    "mailSubject": "フレッシュマンセミナー（木曜日）教室予約について",
+    "deadline": "4月開講前",
+    "urgent": false,
+    "note": "4/16〜6/4各木曜日の教室予約確認",
+    "summary": "学務課からのフレッシュマンセミナー教室予約連絡。4/16〜6/4の各木曜日。",
+    "thread_status": "open",
+    "thread_summary": "3/18依頼。返信なし。",
+    "related_threads": [
+      "t22"
+    ]
+  },
+  {
+    "id": "t23",
+    "priority": "mid",
+    "title": "入試AO：学科毎 vs 学系毎の募集確認",
+    "from": "美馬 一博（自分メモ）",
+    "fromEmail": "mima.kazuhiro@sist.ac.jp",
+    "mailDate": "2026-03-23",
+    "mailSubject": "入試AO委員会タスク",
+    "deadline": "本日学科会議で確認",
+    "urgent": false,
+    "note": "本日学科会議で確認予定",
+    "summary": "学科毎の募集か学系毎の募集かを確認。",
+    "thread_status": "open",
+    "thread_summary": "3/23メモ→本日学科会議で確認。",
+    "related_threads": [
+      "t3"
+    ]
+  },
+  {
+    "id": "t24",
+    "priority": "mid",
+    "title": "評議会タスク（アンケート・Pickup講座・地場産業課題）",
+    "from": "美馬 一博（自分メモ）",
+    "fromEmail": "mima.kazuhiro@sist.ac.jp",
+    "mailDate": "2026-03-23",
+    "mailSubject": "評議会タスク",
+    "deadline": "次回学科会議以降",
+    "urgent": false,
+    "note": "①アンケート変更伝達 ②Pickup講座選出 ③地場産業連携科目検討",
+    "summary": "評議会報告に基づく学科対応が必要な宿題3件：\n\n①学科アンケート：新入生アンケートの学科設問の見直し結果を伝達\n②推しPickup講座：高校訪問用の講師リストから2〜3件選出\n③地場産業連携：単位化できそうな科目の検討",
+    "thread_status": "open",
+    "thread_summary": "3/23メモ送信。",
+    "related_threads": [
+      "t3"
+    ]
+  },
+  {
+    "id": "t28",
+    "priority": "mid",
+    "title": "健康診断受診票配布（4/7, 5/11）",
+    "from": "原田 典恵",
+    "fromEmail": "",
+    "mailDate": "2026-03-23",
+    "mailSubject": "健康診断受診票配布について",
+    "deadline": "4/7",
+    "urgent": false,
+    "note": "受診票を受け取る。4/7と5/11に健康診断実施",
+    "summary": "健康診断の受診票配布について。4/7と5/11に実施。",
+    "thread_status": "open",
+    "thread_summary": "3/23 12:42受信。情報共有。",
+    "related_threads": []
+  },
+  {
+    "id": "t11",
+    "priority": "low",
+    "title": "FD・SD研修アーカイブ視聴",
+    "from": "松野 七重（総務課）",
+    "fromEmail": "matsuno-nanae@sist.ac.jp",
+    "mailDate": "2026-03-18",
+    "mailSubject": "FD・SD研修アーカイブについて",
+    "deadline": "随時",
+    "urgent": false,
+    "note": "未視聴",
+    "summary": "3/17実施のFD・SD研修アーカイブ視聴依頼。",
+    "thread_status": "open",
+    "thread_summary": "3/18依頼。返信なし。未視聴の可能性。",
+    "related_threads": []
   },
   {
     "id": "t15",
@@ -476,13 +594,13 @@ const tasks = [
     "from": "杉山 直毅（総務課）",
     "fromEmail": "",
     "mailDate": "2026-03-18",
-    "mailSubject": "【3/24対応】マイクロバスの修理",
+    "mailSubject": "マイクロバスの修理",
     "deadline": "本日 3/24",
     "urgent": false,
     "note": "情報共有。返信不要",
     "summary": "車検後の修理。本日対応。",
     "thread_status": "open",
-    "thread_summary": "3/18通知。情報共有のみ。",
+    "thread_summary": "3/18通知。",
     "related_threads": []
   },
   {
@@ -502,22 +620,6 @@ const tasks = [
     "related_threads": []
   },
   {
-    "id": "t17",
-    "priority": "low",
-    "title": "Zhu Ning LINE連絡確認",
-    "from": "Zhu Ning（十朱）",
-    "fromEmail": "",
-    "mailDate": "2026-03-18",
-    "mailSubject": "お知らせ",
-    "deadline": "随時",
-    "urgent": false,
-    "note": "LINEで連絡あり確認要",
-    "summary": "十朱先生からLINE連絡の確認依頼。",
-    "thread_status": "open",
-    "thread_summary": "3/18メール。LINE側確認要。",
-    "related_threads": []
-  },
-  {
     "id": "t18",
     "priority": "low",
     "title": "図書館 2月新刊選書",
@@ -534,156 +636,19 @@ const tasks = [
     "related_threads": []
   },
   {
-    "id": "t19",
-    "priority": "mid",
-    "title": "服部先生 総合型選抜試験問題共有→学科会議議題",
-    "from": "服部 知美",
-    "fromEmail": "",
-    "mailDate": "2026-03-17",
-    "mailSubject": "総合型選抜試験問題の共有",
-    "deadline": "学科会議で議題化済み",
-    "urgent": false,
-    "note": "3/18に学科会議議題化で合意済み",
-    "summary": "総合型選抜試験問題の共有方法について。",
-    "thread_status": "waiting",
-    "thread_summary": "3/17相談→3/18服部先生返信→3/18美馬「学科会議議題化」と返信。3/23学科会議で扱った可能性。",
-    "related_threads": [
-      "t3"
-    ]
-  },
-  {
-    "id": "t22",
-    "priority": "high",
-    "title": "来年度授業準備（コンピュータ入門・実践技術者・メカトロ基礎実験）",
-    "from": "美馬 一博（自分メモ）",
-    "fromEmail": "mima.kazuhiro@sist.ac.jp",
-    "mailDate": "2026-03-23",
-    "mailSubject": "来年度授業準備",
-    "deadline": "4月開講前",
-    "urgent": true,
-    "note": "①コンピュータ入門 日程確認 ②実践技術者講座 iLearn更新 ③メカトロ基礎実験 学生振り分け",
-    "summary": "4月の新学期開講前に完了すべき授業準備タスク3件：\n\n①コンピュータ入門：開講日程の確認。時間割との整合性チェック\n②実践技術者講座：iLearnの授業ページを来年度版に更新。担当教員アサイン（t2）と連動\n③メカトロニクス基礎実験：履修学生の実験班振り分け。学籍データから班分け表を作成",
-    "thread_status": "open",
-    "thread_summary": "3/23 8:54 自分メモ送信。",
-    "related_threads": [
-      "t2",
-      "t12"
-    ]
-  },
-  {
-    "id": "t23",
-    "priority": "mid",
-    "title": "入試AO：学科毎 vs 学系毎の募集確認",
-    "from": "美馬 一博（自分メモ）",
-    "fromEmail": "mima.kazuhiro@sist.ac.jp",
-    "mailDate": "2026-03-23",
-    "mailSubject": "入試AO委員会タスク",
-    "deadline": "学科会議で確認済み？",
-    "urgent": false,
-    "note": "3/23学科会議で確認予定だった",
-    "summary": "学科毎の募集か学系毎の募集かを確認。",
-    "thread_status": "waiting",
-    "thread_summary": "3/23 8:08メモ→3/23学科会議で確認予定。結果確認要。",
-    "related_threads": [
-      "t3"
-    ]
-  },
-  {
-    "id": "t24",
-    "priority": "mid",
-    "title": "評議会タスク（アンケート・Pickup講座・地場産業課題）",
-    "from": "美馬 一博（自分メモ）",
-    "fromEmail": "mima.kazuhiro@sist.ac.jp",
-    "mailDate": "2026-03-23",
-    "mailSubject": "評議会タスク",
-    "deadline": "次回学科会議以降",
-    "urgent": false,
-    "note": "①アンケート変更伝達 ②Pickup講座選出 ③地場産業連携科目検討",
-    "summary": "評議会報告に基づく学科対応が必要な宿題3件：\n\n①学科アンケート：新入生アンケートの学科設問（毎年2問程度）の見直し結果を伝達\n②推しPickup講座：高校訪問用の講師リストから電気電子の「推し講座」を2〜3件選出。教育委員会経由で県下の高校に配布される資料用\n③地場産業連携：地場産業から課題を受けて単位化できそうな科目があれば提案",
-    "thread_status": "open",
-    "thread_summary": "3/23 7:43メモ送信。",
-    "related_threads": [
-      "t3"
-    ]
-  },
-  {
-    "id": "t25",
-    "priority": "mid",
-    "title": "村上裕二先生 電気回路学１の成績提供",
-    "from": "村上 裕二",
-    "fromEmail": "",
-    "mailDate": "2026-03-23",
-    "mailSubject": "電気回路学１の成績",
-    "deadline": "早めに",
-    "urgent": false,
-    "note": "電磁気学１のクラス分けに使いたいとのこと",
-    "summary": "村上先生から電気回路学１の成績データ提供依頼。クラス分け用。",
-    "thread_status": "open",
-    "thread_summary": "3/23 18:09受信。返信なし。",
-    "related_threads": []
-  },
-  {
-    "id": "t26",
-    "priority": "mid",
-    "title": "五十嵐 キャリア・ナビゲーション 電気電子分野支援相談",
-    "from": "五十嵐 豊",
-    "fromEmail": "",
-    "mailDate": "2026-03-23",
-    "mailSubject": "電気電子分野のキャリア支援について",
-    "deadline": "随時",
-    "urgent": false,
-    "note": "キャリアナビゲーションからの相談。返信未確認",
-    "summary": "キャリア・ナビゲーションの五十嵐さんから電気電子分野のキャリア支援に関する相談。",
-    "thread_status": "open",
-    "thread_summary": "3/23 14:42受信。返信未確認。",
-    "related_threads": []
-  },
-  {
-    "id": "t27",
-    "priority": "mid",
-    "title": "MDA研究会 役員会・講演会（3/25）",
-    "from": "池田 達哉（社会連携課）",
-    "fromEmail": "",
-    "mailDate": "2026-03-23",
-    "mailSubject": "【リマインド】MDA研究会_役員会等の開催",
-    "deadline": "3/25（火）",
-    "urgent": false,
-    "note": "明後日3/25のMDA研究会最後の役員会・講演会",
-    "summary": "MDA研究会の役員会・講演会が3/25に開催。リマインド。",
-    "thread_status": "open",
-    "thread_summary": "3/23 10:50リマインド受信。",
-    "related_threads": []
-  },
-  {
-    "id": "t28",
-    "priority": "mid",
-    "title": "健康診断受診票配布（4/7, 5/11）",
-    "from": "原田 典恵",
-    "fromEmail": "",
-    "mailDate": "2026-03-23",
-    "mailSubject": "健康診断受診票配布について",
-    "deadline": "4/7",
-    "urgent": false,
-    "note": "4/7と5/11の健康診断。受診票配布の連絡",
-    "summary": "健康診断の受診票配布について。4/7と5/11に実施。",
-    "thread_status": "open",
-    "thread_summary": "3/23 12:42受信。",
-    "related_threads": []
-  },
-  {
     "id": "t29",
     "priority": "low",
     "title": "研究実験棟 冷却水ポンプ工事（3/23-3/31）",
     "from": "杉山 直毅（総務課）",
     "fromEmail": "",
     "mailDate": "2026-03-23",
-    "mailSubject": "研究実験棟 冷却水ポンプ更新及び排水設備工事",
+    "mailSubject": "研究実験棟 冷却水ポンプ更新工事",
     "deadline": "3/31まで",
     "urgent": false,
     "note": "年度末工事。情報共有",
     "summary": "研究実験棟の冷却水ポンプ更新・排水設備工事が3/23-3/31に実施。",
     "thread_status": "open",
-    "thread_summary": "3/23 11:52受信。情報共有。",
+    "thread_summary": "3/23受信。情報共有。",
     "related_threads": []
   }
 ];
@@ -693,7 +658,7 @@ const completedTasks = [
     "title": "360度診断 回答完了",
     "from": "牧野 洋之（人事課）",
     "thread_status": "resolved",
-    "thread_summary": "3/18 FosterLink配信→3/19牧野リマインド→3/22美馬回答→牧野お礼。完結。",
+    "thread_summary": "3/18配信→3/19リマインド→3/22回答→牧野お礼。完結。",
     "summary": "360度診断の回答完了。"
   },
   {
@@ -701,15 +666,15 @@ const completedTasks = [
     "title": "歓送迎会 出欠回答済み",
     "from": "松野 七重（総務課）",
     "thread_status": "resolved",
-    "thread_summary": "3/16案内→3/18リマインド→3/22美馬回答。完結。",
-    "summary": "4/3(金)19時〜 うお鶏掛川店。"
+    "thread_summary": "3/16案内→3/18リマインド→3/22回答。完結。",
+    "summary": "4/3(金)19時〜 うお鶏掛川店。出席回答済み。"
   },
   {
     "id": "t7",
     "title": "優秀賞候補者 推薦書提出済み",
     "from": "中安 隼平（学務課）",
     "thread_status": "resolved",
-    "thread_summary": "3/18依頼→同日美馬先生が推薦書添付返信。完結。",
+    "thread_summary": "3/18依頼→同日推薦書添付返信。完結。",
     "summary": "電気電子工学科 各学年2名以内の推薦完了。"
   },
   {
@@ -717,8 +682,8 @@ const completedTasks = [
     "title": "学園借上げ住宅 回答書提出済み",
     "from": "松野 七重（総務課）",
     "thread_status": "resolved",
-    "thread_summary": "3/18通知→3/22美馬回答→3/23松野「承知しました」。完結。",
-    "summary": "個人契約切替で回答済み。"
+    "thread_summary": "3/18通知→3/22回答→3/23松野「承知しました」。完結。",
+    "summary": "個人契約切替で回答済み。松野さん確認済み。"
   },
   {
     "id": "t20",
@@ -735,6 +700,14 @@ const completedTasks = [
     "thread_status": "resolved",
     "thread_summary": "3/17依頼→3/16送付済み。完結。",
     "summary": "教員評価の自己評価表送付完了。"
+  },
+  {
+    "id": "t17",
+    "title": "Zhu Ning LINE連絡→メカトロ準備確定",
+    "from": "Zhu Ning（十朱）",
+    "thread_status": "resolved",
+    "thread_summary": "3/18 LINE連絡→3/24 美馬が3/27 17:00確定通知→3/24十朱先生「承知しました」。完結。",
+    "summary": "メカトロニクス基礎実験準備が3/27 17:00で確定。"
   }
 ];
 const PURGE_KEY = 'daily_tasks_purged';
@@ -750,25 +723,32 @@ let initialized=false;
 function render(){
 if(!initialized){document.getElementById('app').innerHTML='<div style="text-align:center;padding:60px 20px;color:#94a3b8;font-size:1em;">読み込み中...</div>';return;}
 const app=document.getElementById('app');
-const groups={high:[],mid:[],low:[]};
-tasks.forEach(t=>groups[t.priority].push(t));
-let html='';
 const justChecked=new Set(Object.keys(justCheckedIds));
-for(const[pri,label]of[['high',priorityLabels.high],['mid',priorityLabels.mid],['low',priorityLabels.low]]){
-if(groups[pri].length===0)continue;
-const remaining=groups[pri].filter(t=>!checkedState[t.id]||justChecked.has(t.id));
+// thread_statusでカテゴリ分け
+const categories=[
+{key:'open',label:'📨 要対応',desc:'あなたのアクションが必要',cssClass:'priority-high'},
+{key:'waiting',label:'⏳ 返信待ち',desc:'相手の反応を待っています',cssClass:'priority-mid'},
+{key:'resolved',label:'✅ スレッド完結',desc:'メール上は完結・チェックで消去',cssClass:'priority-low'},
+];
+const priOrder={high:0,mid:1,low:2};
+let html='';
+for(const cat of categories){
+const catTasks=tasks.filter(t=>(t.thread_status||'open')===cat.key);
+const remaining=catTasks.filter(t=>!checkedState[t.id]||justChecked.has(t.id));
 if(remaining.length===0)continue;
+remaining.sort((a,b)=>(priOrder[a.priority]||1)-(priOrder[b.priority]||1));
 const doneCount=remaining.filter(t=>checkedState[t.id]).length;
-html+=`<div class="section priority-${pri}">`;
-html+=`<div class="section-header">${label.icon} ${label.label} <span class="badge">${remaining.length-doneCount} 件</span></div>`;
+html+=`<div class="section ${cat.cssClass}">`;
+html+=`<div class="section-header">${cat.label} <span class="badge">${remaining.length-doneCount} 件</span> <span style="font-weight:400;font-size:0.82em;opacity:0.7;margin-left:8px">${cat.desc}</span></div>`;
 html+=`<div class="task-list">`;
 for(const t of remaining){
 const done=checkedState[t.id];
+const priBadge=t.priority==='high'?'🔴':t.priority==='mid'?'🟡':'🔵';
 html+=`
 <div class="task-item ${done?'done':''}" data-id="${t.id}">
 <div class="task-check ${done?'checked':''}" onclick="toggle('${t.id}')"></div>
 <div class="task-body">
-<div class="task-title">${t.title}${t.thread_status?`<span class="thread-badge ${t.thread_status}">${threadLabel(t.thread_status)}</span>`:''}</div>
+<div class="task-title">${priBadge} ${t.title}</div>
 <div class="task-meta">
 <span>👤 ${t.from}</span>
 <span>📝 ${t.note}</span>
