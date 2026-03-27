@@ -153,7 +153,7 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 <div>
 <h1>Daily Tasks</h1>
 <div class="date" id="dateDisplay"></div>
-<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/26 09:10</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/27 11:07</span></div>
+<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/27 19:15</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/27 19:59</span></div>
 </div>
 <div class="header-right">
 <div class="progress" id="progressDisplay">0 / 0 完了<span class="sync-dot disconnected" id="syncDot" title="GitHub未接続"></span></div>
@@ -502,24 +502,6 @@ const tasks = [
     "related_threads": []
   },
   {
-    "id": "t12",
-    "priority": "mid",
-    "title": "フレッシュマンセミナー教室予約",
-    "from": "山下 久美子（学務課）",
-    "fromEmail": "",
-    "mailDate": "2026-03-18",
-    "mailSubject": "フレッシュマンセミナー（木曜日）教室予約について",
-    "deadline": "4月開講前",
-    "urgent": false,
-    "note": "4/16〜6/4各木曜日の教室予約確認",
-    "summary": "学務課からのフレッシュマンセミナー教室予約連絡。4/16〜6/4の各木曜日。",
-    "thread_status": "open",
-    "thread_summary": "3/18依頼。返信なし。",
-    "related_threads": [
-      "t22"
-    ]
-  },
-  {
     "id": "t23",
     "priority": "mid",
     "title": "入試AO：学科毎 vs 学系毎の募集確認",
@@ -766,10 +748,10 @@ const tasks = [
     "mailSubject": "正副学部長会議定期開催の提案",
     "deadline": "早めに返信",
     "urgent": false,
-    "note": "毎月1週目の評議会後に開催案。学部教授会定期開催、広報活動、融合教育・30カリについて",
+    "note": "齋藤先生が返信済み。美馬先生も意見を返信する必要あり",
     "summary": "十朱学部長から、新年度に向けて正副学部長会議を定期開催する提案。\n\n■議題案：学部教授会の定期開催、理工学部広報活動の推進、融合教育と30カリづくり\n■開催案：毎月1週目の評議会後\n■宛先：三林先生、美馬先生、斎藤先生\n■返信で意見を求められている",
     "thread_status": "open",
-    "thread_summary": "3/25 10:42受信。検討・返信が必要。",
+    "thread_summary": "3/25十朱提案→3/25 20:46齋藤先生返信済み。美馬先生は未返信。",
     "related_threads": []
   },
   {
@@ -824,24 +806,6 @@ const tasks = [
     "related_threads": []
   },
   {
-    "id": "t40",
-    "priority": "mid",
-    "title": "正副学部長会議 定期開催への返信（齋藤先生返信済み）",
-    "from": "齋藤 明広",
-    "fromEmail": "",
-    "mailDate": "2026-03-25",
-    "mailSubject": "Re: 正副学部長会議定期開催の提案",
-    "deadline": "早めに返信",
-    "urgent": false,
-    "note": "齋藤先生が返信済み。美馬先生も意見を返信する",
-    "summary": "十朱学部長の定期開催提案（t36）に齋藤先生が返信。美馬先生も意見を返す必要あり。",
-    "thread_status": "open",
-    "thread_summary": "3/25十朱提案→3/25 20:46齋藤返信。美馬先生は未返信。",
-    "related_threads": [
-      "t36"
-    ]
-  },
-  {
     "id": "t41",
     "priority": "mid",
     "title": "自分メモ：松本先生メール・徳重準備",
@@ -874,9 +838,76 @@ const tasks = [
     "thread_status": "open",
     "thread_summary": "3/26 9:02受信。",
     "related_threads": []
+  },
+  {
+    "id": "t43",
+    "priority": "mid",
+    "title": "ものづくりコンテスト打ち合わせ",
+    "from": "nishitani@edu.pref.shizuoka",
+    "fromEmail": "",
+    "mailDate": "2026-03-27",
+    "mailSubject": "ものづくりコンテスト打ち合せ",
+    "deadline": "随時",
+    "urgent": false,
+    "note": "外部（静岡県教育委員会）からのものづくりコンテスト打ち合わせ依頼",
+    "summary": "静岡県教育委員会からものづくりコンテストの打ち合わせ連絡。",
+    "thread_status": "open",
+    "thread_summary": "3/27 13:48受信。",
+    "related_threads": []
+  },
+  {
+    "id": "t44",
+    "priority": "mid",
+    "title": "深野さん FOK(実践技術者)内容確認",
+    "from": "深野 竹識",
+    "fromEmail": "",
+    "mailDate": "2026-03-27",
+    "mailSubject": "FOK 実践技術者講座について",
+    "deadline": "4月開講前",
+    "urgent": false,
+    "note": "FOK株式会社との連携。内容確認の返信が必要か",
+    "summary": "深野さんから実践技術者講座（FOK関連）について連絡。",
+    "thread_status": "open",
+    "thread_summary": "3/27 10:20受信+12:36追加連絡。t2(アサイン)と関連。",
+    "related_threads": [
+      "t2",
+      "t37"
+    ]
+  },
+  {
+    "id": "t45",
+    "priority": "low",
+    "title": "榎葉先生 3/30(月)13:00〜 会議",
+    "from": "榎葉 公彦",
+    "fromEmail": "",
+    "mailDate": "2026-03-27",
+    "mailSubject": "3/30(月)13:00〜",
+    "deadline": "3/30（月）13:00",
+    "urgent": false,
+    "note": "榎葉先生からの会議案内。予定確認",
+    "summary": "3/30(月)13:00からの会議案内。",
+    "thread_status": "open",
+    "thread_summary": "3/27 10:37受信。",
+    "related_threads": []
   }
 ];
 const completedTasks = [
+  {
+    "id": "t12",
+    "title": "フレッシュマンセミナー教室予約",
+    "from": "山下 久美子（学務課）",
+    "thread_status": "resolved",
+    "thread_summary": "3/18依頼→3/26リマインド→3/27美馬「教室確保不要」返信→3/27山下「承知しました」。完結。",
+    "summary": "学務課からのフレッシュマンセミナー教室予約連絡。4/16〜6/4の各木曜日。"
+  },
+  {
+    "id": "t40",
+    "title": "正副学部長会議 定期開催への返信（齋藤先生返信済み）",
+    "from": "齋藤 明広",
+    "thread_status": "resolved",
+    "thread_summary": "3/25十朱提案→3/25 20:46齋藤返信。美馬先生は未返信。",
+    "summary": "十朱学部長の定期開催提案（t36）に齋藤先生が返信。美馬先生も意見を返す必要あり。"
+  },
   {
     "id": "t4",
     "title": "360度診断 回答完了",
