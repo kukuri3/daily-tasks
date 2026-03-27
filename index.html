@@ -153,7 +153,7 @@ body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2
 <div>
 <h1>Daily Tasks</h1>
 <div class="date" id="dateDisplay"></div>
-<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/25 18:10</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/25 18:58</span></div>
+<div class="last-scan">📡 スキャン: <span class="scan-time">2026/03/26 09:10</span> ｜ 🔨 ビルド: <span class="scan-time">2026/03/27 11:07</span></div>
 </div>
 <div class="header-right">
 <div class="progress" id="progressDisplay">0 / 0 完了<span class="sync-dot disconnected" id="syncDot" title="GitHub未接続"></span></div>
@@ -213,7 +213,7 @@ Outlook メールから自動抽出 · Powered by Claude<br>
 </div>
 <script>
 const STORAGE_KEY = 'daily_tasks_state';
-const GENERATED_DATE = '2026-03-25';
+const GENERATED_DATE = '2026-03-27';
 const GITHUB_REPO = 'kukuri3/daily-tasks';
 const DONE_FILE = 'done.json';
 const PAT_KEY = 'daily_tasks_pat';
@@ -387,18 +387,18 @@ const tasks = [
   },
   {
     "id": "t8",
-    "priority": "mid",
-    "title": "特許：包括委任状（池田さん決裁待ち）",
+    "priority": "high",
+    "title": "特許：個別委任状を弁理士(KSI)に提出【決裁済み】",
     "from": "池田 達哉（社会連携課）",
     "fromEmail": "ikeda-tatsuya@sist.ac.jp",
     "mailDate": "2026-03-18",
     "mailSubject": "Re: 包括委任状のご確認状況について",
-    "deadline": "法定期限 4/20",
-    "urgent": false,
-    "note": "3/16に池田さんに転送済み。法人決裁稟議中",
-    "summary": "特許出願（特願2024-122160、抱え込み型AGV）の拒絶査定に対する不服審判手続き。\n\n■状況：KSIパートナーズ法律特許事務所から包括委任状への押印返送が必要\n■経緯：3/9 KSI送付→3/16リマインド→美馬先生が池田さんに転送→3/18池田さん「法人決裁稟議中」\n■出願人：静岡理工科大学＋鈴木製機（共同出願）\n■法定期限：4/20 ← 要フォロー",
-    "thread_status": "waiting",
-    "thread_summary": "3/9 KSI送付→3/16リマインド→3/16美馬→池田転送→3/18池田「決裁稟議中」。法定期限4/20。",
+    "deadline": "法定期限 4/20（早めに提出）",
+    "urgent": true,
+    "note": "3/26池田さんから「法人決裁が下りた」。添付の個別委任状PDFをKSIパートナーズに提出する",
+    "summary": "特許出願（特願2024-122160、抱え込み型AGV）の拒絶査定不服審判手続き。\n\n■状況：法人決裁が下りた（3/26池田さん連絡）\n■やること：添付の個別委任状PDFをKSIパートナーズ法律特許事務所（patent@ksilawpat.jp）にメール送付\n■弁理士：鈴木守、事務担当：野呂良子\n■出願人：静岡理工科大学＋鈴木製機（共同出願）\n■法定期限：4/20\n■バックアップとして分割出願もKSIで進行中",
+    "thread_status": "open",
+    "thread_summary": "2/24 KSI審判請求書送付→3/16リマインド→3/16美馬→池田転送→3/18池田「稟議中」→3/26池田「法人決裁が下りた。添付書類を弁理士へ提出」。個別委任状PDF添付。",
     "related_threads": [
       "t6"
     ]
@@ -805,6 +805,74 @@ const tasks = [
     "summary": "学務課中安さんから優秀賞候補者選考の追加連絡。推薦書は既に提出済み。",
     "thread_status": "waiting",
     "thread_summary": "3/25 13:51受信。t7(推薦書提出済み)の追加連絡。",
+    "related_threads": []
+  },
+  {
+    "id": "t39",
+    "priority": "mid",
+    "title": "大学院進学希望者のTOEIC受験確認",
+    "from": "村上 裕二",
+    "fromEmail": "murakami.yuji@sist.ac.jp",
+    "mailDate": "2026-03-26",
+    "mailSubject": "大学院進学希望者がTOEIC受験済みかどうか確認依頼",
+    "deadline": "4/2（TOEIC申込〆切）",
+    "urgent": false,
+    "note": "指導学生で大学院進学希望者がTOEIC受験済みか確認。未受験なら4/2〆切のTOEICを受けるよう指導",
+    "summary": "理工学研究科運営委員会からの依頼。大学院入試にTOEIC L&R公式スコアが必須。\n\n■確認事項：指導学生で大学院進学希望者がTOEIC受験済みか\n■未受験の場合：4/2(木)15時申込〆切のTOEICを受験させる（6/4公式認定証発行→6/7試験日に間に合う）\n■給費：GPA上位20%以内（新4年生27人中5位以内）\n■推薦：GPA上位30%以内（8位以内）\n■8月一般前期はGPA基準なし→全員該当→4/16申込〆切までのTOEIC受験指導",
+    "thread_status": "open",
+    "thread_summary": "3/26 13:34村上先生依頼→16:11小澤先生「出張で確認取れてないが連絡済み」。指導学生への確認が必要。",
+    "related_threads": []
+  },
+  {
+    "id": "t40",
+    "priority": "mid",
+    "title": "正副学部長会議 定期開催への返信（齋藤先生返信済み）",
+    "from": "齋藤 明広",
+    "fromEmail": "",
+    "mailDate": "2026-03-25",
+    "mailSubject": "Re: 正副学部長会議定期開催の提案",
+    "deadline": "早めに返信",
+    "urgent": false,
+    "note": "齋藤先生が返信済み。美馬先生も意見を返信する",
+    "summary": "十朱学部長の定期開催提案（t36）に齋藤先生が返信。美馬先生も意見を返す必要あり。",
+    "thread_status": "open",
+    "thread_summary": "3/25十朱提案→3/25 20:46齋藤返信。美馬先生は未返信。",
+    "related_threads": [
+      "t36"
+    ]
+  },
+  {
+    "id": "t41",
+    "priority": "mid",
+    "title": "自分メモ：松本先生メール・徳重準備",
+    "from": "美馬 一博（自分メモ）",
+    "fromEmail": "mima.kazuhiro@sist.ac.jp",
+    "mailDate": "2026-03-25",
+    "mailSubject": "松本先生メール、徳重準備",
+    "deadline": "随時",
+    "urgent": false,
+    "note": "メカトロニクス基礎実験関連。松本先生メール対応と徳重準備",
+    "summary": "自分宛メモ。松本先生メール対応と徳重準備について。",
+    "thread_status": "open",
+    "thread_summary": "3/25 21:37自分メモ送信。",
+    "related_threads": [
+      "t22"
+    ]
+  },
+  {
+    "id": "t42",
+    "priority": "low",
+    "title": "勤怠システム アラーム対応",
+    "from": "勤次郎システムメール",
+    "fromEmail": "",
+    "mailDate": "2026-03-26",
+    "mailSubject": "勤次郎からのお知らせ",
+    "deadline": "早めに",
+    "urgent": false,
+    "note": "勤次郎でアラーム発生。確認して対処",
+    "summary": "勤次郎の勤怠管理システムからアラーム通知。確認と対処が必要。",
+    "thread_status": "open",
+    "thread_summary": "3/26 9:02受信。",
     "related_threads": []
   }
 ];
