@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Tasks - 美馬研究室</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Hiragino Sans','Meiryo',sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh}
+.header{background:linear-gradient(135deg,#2B4C7E 0%,#1a365d 100%);color:white;padding:20px 32px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.header h1{font-size:1.4em;font-weight:600}
+.header .date{font-size:0.95em;opacity:0.85}
+.header-right{display:flex;align-items:center;gap:12px}
+.header .progress{font-size:0.9em;background:rgba(255,255,255,0.15);padding:6px 14px;border-radius:20px}
+.check-now-btn{background:#F59E0B;color:#1a1a2e;border:none;padding:8px 18px;border-radius:8px;font-size:0.9em;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s;box-shadow:0 2px 6px rgba(0,0,0,0.2)}
+.check-now-btn:hover{background:#FBBF24;transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,0.25)}
+.check-now-btn:active{transform:translateY(0)}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center}
+.modal-overlay.active{display:flex}
+.modal{background:white;border-radius:16px;padding:32px;max-width:480px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,0.3);text-align:center}
+.modal h2{font-size:1.2em;margin-bottom:12px;color:#1a1a2e}
+.modal p{font-size:0.92em;color:#475569;margin-bottom:8px;line-height:1.6}
+.modal .step{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin:16px 0;text-align:left}
+.modal .step-num{display:inline-block;background:#2B4C7E;color:white;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:0.8em;font-weight:700;margin-right:8px}
+.modal .step-line{font-size:0.9em;margin-bottom:6px;display:flex;align-items:center}
+.modal .close-btn{background:#2B4C7E;color:white;border:none;padding:10px 28px;border-radius:8px;font-size:0.95em;font-weight:600;cursor:pointer;margin-top:16px}
+.modal .close-btn:hover{background:#1a365d}
+.modal .shortcut{background:#1e293b;color:#67e8f9;font-family:'SF Mono','Menlo',monospace;padding:8px 14px;border-radius:6px;font-size:0.85em;display:inline-block;margin-top:8px;user-select:all;cursor:pointer}
+.modal .shortcut:hover{background:#0f172a}
+.container{max-width:1100px;margin:24px auto;padding:0 16px}
+.section{background:white;border-radius:12px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.08);overflow:hidden}
+.section-header{padding:14px 20px;font-weight:700;font-size:0.95em;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.section-header .badge{font-size:0.8em;padding:2px 10px;border-radius:12px;color:white;font-weight:600}
+.priority-high .section-header{background:#FEE2E2;color:#991B1B}
+.priority-high .badge{background:#DC2626}
+.priority-mid .section-header{background:#FEF3C7;color:#92400E}
+.priority-mid .badge{background:#D97706}
+.priority-low .section-header{background:#DBEAFE;color:#1E40AF}
+.priority-low .badge{background:#2563EB}
+.task-list{padding:0}
+.task-item{display:flex;align-items:flex-start;padding:14px 20px;border-top:1px solid #f0f0f0;transition:background 0.15s;gap:12px;flex-wrap:wrap}
+.task-item:hover{background:#fafbfc}
+.task-item.done{opacity:0.45}
+.task-item.done .task-title{text-decoration:line-through}
+.task-check{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid #cbd5e1;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all 0.15s}
+.task-check:hover{border-color:#2B4C7E}
+.task-check.checked{background:#2B4C7E;border-color:#2B4C7E}
+.task-check.checked::after{content:'\2713';color:white;font-size:14px;font-weight:700}
+.task-body{flex:1;min-width:0}
+.task-title{font-weight:600;font-size:0.95em;margin-bottom:3px}
+.task-meta{font-size:0.82em;color:#64748b;display:flex;flex-wrap:wrap;gap:12px}
+.task-meta span{display:flex;align-items:center;gap:3px}
+.summary-toggle{display:inline-flex;align-items:center;gap:4px;font-size:0.78em;color:#2B4C7E;cursor:pointer;margin-top:6px;padding:3px 8px;border-radius:4px;background:#f1f5f9;transition:background 0.15s;user-select:none}
+.summary-toggle:hover{background:#e2e8f0}
+.summary-toggle .arrow{display:inline-block;font-size:0.7em;transition:transform 0.2s}
+.summary-toggle.open .arrow{transform:rotate(90deg)}
+.summary-box{width:100%;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease}
+.summary-box.open{max-height:800px}
+.summary-content{padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:0.85em;color:#334155;line-height:1.65;white-space:pre-wrap}
+.thread-badge{display:inline-flex;align-items:center;gap:3px;font-size:0.72em;padding:2px 8px;border-radius:10px;font-weight:600;vertical-align:middle;margin-left:6px}
+.thread-badge.open{background:#FEF3C7;color:#92400E}
+.thread-badge.waiting{background:#DBEAFE;color:#1E40AF}
+.thread-badge.resolved{background:#D1FAE5;color:#065F46}
+.related-link{font-size:0.75em;color:#6366F1;cursor:pointer;text-decoration:underline;margin-left:4px}
+.mail-link{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:6px;background:#f1f5f9;color:#2B4C7E;text-decoration:none;font-size:16px;transition:all 0.15s;margin-top:2px;cursor:pointer;border:none}
+.mail-link:hover{background:#2B4C7E;color:white;transform:scale(1.1)}
+.mail-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:flex-start;padding-top:40px}
+.mail-modal-overlay.active{display:flex}
+.mail-modal{background:white;border-radius:16px;max-width:800px;width:95%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.mail-modal-header{background:#2B4C7E;color:white;padding:16px 24px;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:center}
+.mail-modal-header h3{font-size:1em;font-weight:600}
+.mail-modal-close{background:none;border:none;color:white;font-size:1.5em;cursor:pointer;padding:0 4px;opacity:0.8}
+.mail-modal-close:hover{opacity:1}
+.mail-modal-meta{padding:14px 24px;background:#f8fafc;border-bottom:1px solid #e2e8f0;font-size:0.85em;color:#475569;line-height:1.8}
+.mail-modal-meta strong{color:#1a1a2e}
+.mail-modal-body{padding:20px 24px;font-size:0.9em;color:#334155;line-height:1.75;white-space:pre-wrap}
+.task-deadline{flex-shrink:0;text-align:right;font-size:0.82em;color:#64748b;min-width:120px}
+.task-deadline .dl-date{font-weight:600;color:#1a1a2e}
+.task-deadline.urgent .dl-date{color:#DC2626}
+.warning-banner{background:#FEF3C7;border:1px solid #F59E0B;border-radius:10px;padding:12px 18px;margin-bottom:16px;font-size:0.9em;color:#92400E;display:flex;align-items:center;gap:8px}
+.footer{text-align:center;padding:20px;font-size:0.8em;color:#94a3b8}
+.reset-btn{background:none;border:1px solid #cbd5e1;padding:4px 14px;border-radius:6px;cursor:pointer;font-size:0.8em;color:#64748b;margin-top:8px}
+.reset-btn:hover{background:#f1f5f9}
+.settings-btn{background:rgba(255,255,255,0.15);border:none;color:white;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1.1em;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.settings-btn:hover{background:rgba(255,255,255,0.25)}
+.sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-left:6px;vertical-align:middle}
+.sync-dot.connected{background:#34D399}
+.sync-dot.disconnected{background:#94a3b8}
+.sync-dot.syncing{background:#FBBF24;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.settings-modal{background:white;border-radius:16px;padding:28px;max-width:440px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.settings-modal h2{font-size:1.1em;margin-bottom:16px;color:#1a1a2e}
+.settings-modal label{display:block;font-size:0.85em;color:#475569;margin-bottom:6px;font-weight:600}
+.settings-modal input{width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:0.9em;font-family:monospace;margin-bottom:12px}
+.settings-modal input:focus{outline:none;border-color:#2B4C7E;box-shadow:0 0 0 3px rgba(43,76,126,0.1)}
+.settings-modal .hint{font-size:0.78em;color:#94a3b8;margin-bottom:16px;line-height:1.5}
+.settings-modal .btn-row{display:flex;gap:8px;justify-content:flex-end}
+.settings-modal .save-btn{background:#2B4C7E;color:white;border:none;padding:8px 20px;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9em}
+.settings-modal .save-btn:hover{background:#1a365d}
+.settings-modal .cancel-btn{background:#f1f5f9;color:#475569;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:0.9em}
+.settings-modal .status-msg{font-size:0.82em;padding:8px 12px;border-radius:6px;margin-bottom:12px;display:none}
+.settings-modal .status-msg.ok{display:block;background:#D1FAE5;color:#065F46}
+.settings-modal .status-msg.err{display:block;background:#FEE2E2;color:#991B1B}
+.last-scan{font-size:0.8em;opacity:0.7;margin-top:2px}
+.last-scan .scan-time{font-weight:600;opacity:1}
+.done-section{background:#f8fafc;border-radius:12px;margin-bottom:16px;border:1px solid #e2e8f0}
+.done-section-header{padding:14px 20px;font-weight:600;font-size:0.9em;color:#64748b;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.done-section-header .arrow{display:inline-block;font-size:0.7em;transition:transform 0.2s;margin-right:6px}
+.done-section-header.open .arrow{transform:rotate(90deg)}
+.done-section-body{max-height:0;overflow:hidden;transition:max-height 0.3s ease}
+.done-section-body.open{max-height:2000px}
+.done-item{display:flex;align-items:center;padding:10px 20px;border-top:1px solid #f0f0f0;gap:10px;font-size:0.88em;color:#94a3b8}
+.done-item .done-title{flex:1;text-decoration:line-through}
+.done-item .done-from{font-size:0.85em;color:#b0b8c4}
+.purge-check{flex-shrink:0;width:18px;height:18px;border-radius:4px;border:2px solid #e2e8f0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.purge-check:hover{border-color:#DC2626}
+.purge-check.purged{background:#DC2626;border-color:#DC2626}
+.purge-check.purged::after{content:'✕';color:white;font-size:11px;font-weight:700}
+.undo-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:white;padding:12px 20px;border-radius:10px;font-size:0.9em;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,0.3);z-index:2000;animation:slideUp 0.3s ease}
+.undo-toast .undo-btn{background:#F59E0B;color:#1a1a2e;border:none;padding:6px 16px;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.9em}
+.undo-toast .undo-btn:hover{background:#FBBF24}
+.undo-toast .undo-timer{width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden}
+.undo-toast .undo-timer-bar{height:100%;background:#F59E0B;transition:width linear}
+@keyframes slideUp{from{transform:translateX(-50%) translateY(20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+@media(max-width:640px){
+.header{padding:14px 16px;flex-direction:column;align-items:flex-start;gap:10px}
+.header-right{width:100%;justify-content:space-between}
+.header h1{font-size:1.2em}
+.container{padding:0 8px;margin:12px auto}
+.task-item{padding:10px 14px;gap:8px}
+.task-body{min-width:0}
+.task-title{font-size:0.9em}
+.task-meta{font-size:0.78em;gap:6px;flex-direction:column}
+.task-meta span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.task-deadline{min-width:auto;text-align:left;font-size:0.78em}
+.summary-content{font-size:0.82em;padding:8px 10px}
+.mail-link{width:28px;height:28px;font-size:14px}
+.section-header{padding:10px 14px;font-size:0.88em}
+.check-now-btn{padding:6px 12px;font-size:0.82em}
+.settings-btn{width:30px;height:30px;font-size:0.95em}
+.progress{font-size:0.82em;padding:4px 10px}
+.done-item{padding:8px 14px;font-size:0.82em}
+.modal{padding:20px;max-width:95%}
+.mail-modal{max-width:98%;width:98%}
+.mail-modal-header{padding:12px 16px}
+.mail-modal-meta{padding:10px 16px}
+.mail-modal-body{padding:14px 16px;font-size:0.85em}
+}
+</style>
+</head>
+<body>
+<div class="header">
+<div>
+<h1>Daily Tasks</h1>
+<div class="date" id="dateDisplay"></div>
+<div class="last-scan">📡 スキャン: <span class="scan-time">{{ last_scan_display }}</span> ｜ 🔨 ビルド: <span class="scan-time">{{ build_time }}</span></div>
+</div>
+<div class="header-right">
+<div class="progress" id="progressDisplay">0 / 0 完了<span class="sync-dot disconnected" id="syncDot" title="GitHub未接続"></span></div>
+<button class="check-now-btn" onclick="checkNow()">
+<span id="checkIcon">🔄</span> いま確認
+</button>
+<button class="settings-btn" onclick="openSettings()" title="設定">⚙️</button>
+</div>
+</div>
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+<div class="modal" onclick="event.stopPropagation()">
+<h2>📬 メールからタスクを更新</h2>
+<p>Claude Codeから手動スキャンを起動します。</p>
+<div class="step">
+<div class="step-line"><span class="step-num">1</span> ターミナルでClaude Codeを開く</div>
+<div class="step-line"><span class="step-num">2</span> 以下のコマンドを入力</div>
+</div>
+<p>Claudeに直接こう伝えてください：</p>
+<div class="shortcut" title="クリックでコピー" onclick="copyCommand()">Outlookのメールを確認してタスクリストを更新して</div>
+<p id="copyMsg" style="font-size:0.8em;color:#2B4C7E;margin-top:4px;opacity:0;transition:opacity 0.3s;">コピーしました</p>
+<button class="close-btn" onclick="document.getElementById('modalOverlay').classList.remove('active')">閉じる</button>
+</div>
+</div>
+<div class="mail-modal-overlay" id="mailModalOverlay" onclick="closeMailModal(event)">
+<div class="mail-modal" onclick="event.stopPropagation()">
+<div class="mail-modal-header">
+<h3 id="mailModalTitle">✉ メール本文</h3>
+<button class="mail-modal-close" onclick="document.getElementById('mailModalOverlay').classList.remove('active')">&times;</button>
+</div>
+<div class="mail-modal-meta" id="mailModalMeta"></div>
+<div class="mail-modal-body" id="mailModalBody"></div>
+</div>
+</div>
+<div class="modal-overlay" id="settingsOverlay" onclick="closeSettings(event)">
+<div class="settings-modal" onclick="event.stopPropagation()">
+<h2>⚙️ GitHub同期設定</h2>
+<div class="status-msg" id="settingsStatus"></div>
+<label>GitHub Personal Access Token</label>
+<input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx">
+<div class="hint">
+リポジトリ kukuri3/daily-tasks の Contents 読み書き権限が必要です。<br>
+GitHub → Settings → Developer settings → Fine-grained tokens で作成してください。<br>
+トークンはこのブラウザのlocalStorageにのみ保存されます。
+</div>
+<div class="btn-row">
+<button class="cancel-btn" onclick="document.getElementById('settingsOverlay').classList.remove('active')">キャンセル</button>
+<button class="save-btn" onclick="savePATSetting()">保存・テスト</button>
+</div>
+</div>
+</div>
+<div class="container" id="app"></div>
+<div class="container" id="doneSection"></div>
+<div class="footer">
+Outlook メールから自動抽出 · Powered by Claude<br>
+<span id="syncInfo" style="font-size:0.75em;color:#94a3b8;"></span><br>
+<button class="reset-btn" onclick="resetAll()">チェックをすべてリセット</button>
+</div>
+<script>
+const STORAGE_KEY = 'daily_tasks_state';
+const GENERATED_DATE = '{{ generated_date }}';
+const GITHUB_REPO = 'kukuri3/daily-tasks';
+const DONE_FILE = 'done.json';
+const PAT_KEY = 'daily_tasks_pat';
+function getPAT(){return localStorage.getItem(PAT_KEY)||'';}
+function setSyncDot(state){
+const dot=document.getElementById('syncDot');
+dot.className='sync-dot '+state;
+dot.title=state==='connected'?'GitHub同期中':state==='syncing'?'同期中...':'GitHub未接続';
+}
+async function loadFromGitHub(){
+const pat=getPAT();if(!pat)return null;
+try{
+const res=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DONE_FILE}`,{
+headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json'}});
+if(!res.ok)return null;
+const data=await res.json();
+const content=JSON.parse(atob(data.content));
+return{checked:content.checked||{},sha:data.sha};
+}catch{return null;}
+}
+let syncTimer=null;
+function scheduleSyncToGitHub(){
+if(syncTimer)clearTimeout(syncTimer);
+syncTimer=setTimeout(()=>syncToGitHub(checkedState),1500);
+}
+function updateSyncInfo(msg){const el=document.getElementById('syncInfo');if(el)el.textContent=msg;}
+async function syncToGitHub(checked){
+const pat=getPAT();if(!pat){updateSyncInfo('PAT未設定');return;}
+setSyncDot('syncing');
+try{
+const getRes=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DONE_FILE}`,{
+headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json'}});
+let sha='';
+if(getRes.ok){const d=await getRes.json();sha=d.sha;}
+else{updateSyncInfo('読取失敗: '+getRes.status);setSyncDot('disconnected');return;}
+const content=btoa(JSON.stringify({date:GENERATED_DATE,checked},null,2));
+const body={message:'sync done.json',content};
+if(sha)body.sha=sha;
+const putRes=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DONE_FILE}`,{
+method:'PUT',
+headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+body:JSON.stringify(body)});
+if(putRes.ok){
+const now=new Date();
+const ts=`${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+updateSyncInfo('最終同期: '+ts+' (書込OK, '+Object.keys(checked).filter(k=>checked[k]).length+'件チェック済)');
+setSyncDot('connected');
+}else{
+const err=await putRes.text();
+updateSyncInfo('書込失敗: '+putRes.status+' '+err.substring(0,100));
+setSyncDot('disconnected');
+}
+}catch(e){updateSyncInfo('同期エラー: '+e.message);setSyncDot('disconnected');}
+}
+function openSettings(){
+document.getElementById('patInput').value=getPAT();
+document.getElementById('settingsStatus').className='status-msg';
+document.getElementById('settingsOverlay').classList.add('active');
+}
+function closeSettings(e){if(e.target===document.getElementById('settingsOverlay'))document.getElementById('settingsOverlay').classList.remove('active');}
+async function savePATSetting(){
+const pat=document.getElementById('patInput').value.trim();
+const status=document.getElementById('settingsStatus');
+if(!pat){localStorage.removeItem(PAT_KEY);setSyncDot('disconnected');status.className='status-msg ok';status.textContent='トークンを削除しました';return;}
+status.className='status-msg';status.textContent='';
+try{
+const res=await fetch(`https://api.github.com/repos/${GITHUB_REPO}`,{
+headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json'}});
+if(res.ok){
+localStorage.setItem(PAT_KEY,pat);
+setSyncDot('connected');
+status.className='status-msg ok';status.textContent='接続成功！同期が有効になりました。';
+const gh=await loadFromGitHub();
+if(gh&&gh.checked){Object.assign(checkedState,gh.checked);saveState(checkedState);render();}
+}else{
+status.className='status-msg err';status.textContent='認証失敗：トークンを確認してください（'+res.status+'）';
+}
+}catch(e){status.className='status-msg err';status.textContent='接続エラー：'+e.message;}
+}
+const tasks = {{ tasks_json }};
+const completedTasks = {{ completed_tasks_json }};
+const PURGE_KEY = 'daily_tasks_purged';
+function loadPurged(){try{return JSON.parse(localStorage.getItem(PURGE_KEY)||'{}');}catch{return{};}}
+function savePurged(p){localStorage.setItem(PURGE_KEY,JSON.stringify(p));}
+let purgedState=loadPurged();
+const priorityLabels={high:{label:'緊急・本日対応',icon:'🔴'},mid:{label:'近日中',icon:'🟡'},low:{label:'予定・軽微',icon:'🔵'}};
+function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return{};const s=JSON.parse(raw);if(s.date!==GENERATED_DATE)return{};return s.checked||{};}catch{return{};}}
+function saveState(checked){localStorage.setItem(STORAGE_KEY,JSON.stringify({date:GENERATED_DATE,checked}));}
+let checkedState={};
+let justCheckedIds={};
+let initialized=false;
+function render(){
+if(!initialized){document.getElementById('app').innerHTML='<div style="text-align:center;padding:60px 20px;color:#94a3b8;font-size:1em;">読み込み中...</div>';return;}
+const app=document.getElementById('app');
+const justChecked=new Set(Object.keys(justCheckedIds));
+// thread_statusでカテゴリ分け
+const categories=[
+{key:'open',label:'📨 要対応',desc:'あなたのアクションが必要',cssClass:'priority-high'},
+{key:'waiting',label:'⏳ 返信待ち',desc:'相手の反応を待っています',cssClass:'priority-mid'},
+{key:'resolved',label:'✅ スレッド完結',desc:'メール上は完結・チェックで消去',cssClass:'priority-low'},
+];
+const priOrder={high:0,mid:1,low:2};
+let html='';
+for(const cat of categories){
+const catTasks=tasks.filter(t=>(t.thread_status||'open')===cat.key);
+const remaining=catTasks.filter(t=>!checkedState[t.id]||justChecked.has(t.id));
+if(remaining.length===0)continue;
+remaining.sort((a,b)=>(priOrder[a.priority]||1)-(priOrder[b.priority]||1));
+const doneCount=remaining.filter(t=>checkedState[t.id]).length;
+html+=`<div class="section ${cat.cssClass}">`;
+html+=`<div class="section-header">${cat.label} <span class="badge">${remaining.length-doneCount} 件</span> <span style="font-weight:400;font-size:0.82em;opacity:0.7;margin-left:8px">${cat.desc}</span></div>`;
+html+=`<div class="task-list">`;
+for(const t of remaining){
+const done=checkedState[t.id];
+const priBadge=t.priority==='high'?'🔴':t.priority==='mid'?'🟡':'🔵';
+html+=`
+<div class="task-item ${done?'done':''}" data-id="${t.id}">
+<div class="task-check ${done?'checked':''}" onclick="toggle('${t.id}')"></div>
+<div class="task-body">
+<div class="task-title">${priBadge} ${t.title}</div>
+<div class="task-meta">
+<span>👤 ${t.from}</span>
+<span>📝 ${t.note}</span>
+${t.related_threads&&t.related_threads.length?`<span>🔗 関連: ${t.related_threads.map(r=>`<span class="related-link" onclick="scrollToTask('${r}')">${r}</span>`).join(' ')}</span>`:''}
+</div>
+${t.thread_summary?`<div class="summary-toggle" onclick="toggleSummary('${t.id}_thread',event)"><span class="arrow">▶</span> スレッド経緯</div>`:''}
+${t.summary?`<div class="summary-toggle" onclick="toggleSummary('${t.id}',event)"><span class="arrow">▶</span> メール要約</div>`:''}
+</div>
+${t.summary?`<button class="mail-link" onclick="showMailModal('${t.id}',event)" title="元メールを表示">✉</button>`:''}
+<div class="task-deadline ${t.urgent?'urgent':''}">
+<div class="dl-date">${t.deadline}</div>
+</div>
+${t.thread_summary?`<div class="summary-box" id="summary-${t.id}_thread"><div class="summary-content" style="border-left:3px solid #6366F1;background:#f5f3ff">📋 ${t.thread_summary}</div></div>`:''}
+${t.summary?`<div class="summary-box" id="summary-${t.id}"><div class="summary-content">${t.summary}</div></div>`:''}
+</div>`;
+}
+html+=`</div></div>`;
+}
+if(tasks.every(t=>checkedState[t.id])&&justChecked.size===0){
+html+=`<div style="text-align:center;padding:60px 20px;color:#64748b;font-size:1.1em;">✅ すべてのタスクが完了しました</div>`;
+}
+app.innerHTML=html;
+updateProgress();
+renderDone();
+}
+let undoTimer=null;
+let undoToastEl=null;
+function toggle(id){
+checkedState[id]=!checkedState[id];
+saveState(checkedState);
+scheduleSyncToGitHub();
+if(checkedState[id]){
+const t=tasks.find(x=>x.id===id);
+const title=t?t.title:id;
+justCheckedIds[id]=true;
+render();
+showUndoToast(id,title);
+setTimeout(()=>{
+const el=document.querySelector(`.task-item[data-id="${id}"]`);
+if(el){
+el.style.transition='opacity 0.4s,max-height 0.4s,padding 0.4s';
+el.style.opacity='0';
+el.style.maxHeight='0';
+el.style.padding='0 20px';
+el.style.overflow='hidden';
+setTimeout(()=>{delete justCheckedIds[id];render();},450);
+}
+},5000);
+}else{
+delete justCheckedIds[id];
+render();
+}
+}
+function showUndoToast(id,title){
+dismissUndoToast();
+const toast=document.createElement('div');
+toast.className='undo-toast';
+toast.innerHTML=`<span>✅ 「${title.substring(0,20)}${title.length>20?'...':''}」を完了</span><button class="undo-btn" onclick="undoCheck('${id}')">取り消し</button><div class="undo-timer"><div class="undo-timer-bar" id="undoBar"></div></div>`;
+document.body.appendChild(toast);
+undoToastEl=toast;
+requestAnimationFrame(()=>{
+const bar=document.getElementById('undoBar');
+if(bar){bar.style.width='100%';requestAnimationFrame(()=>{bar.style.width='0%';bar.style.transitionDuration='5s';});}
+});
+undoTimer=setTimeout(()=>dismissUndoToast(),5000);
+}
+function undoCheck(id){
+dismissUndoToast();
+checkedState[id]=false;
+delete justCheckedIds[id];
+saveState(checkedState);
+scheduleSyncToGitHub();
+render();
+}
+function dismissUndoToast(){
+if(undoTimer){clearTimeout(undoTimer);undoTimer=null;}
+if(undoToastEl){undoToastEl.remove();undoToastEl=null;}
+}
+function resetAll(){
+if(!confirm('すべてのチェックをリセットしますか？'))return;
+checkedState={};
+saveState(checkedState);
+scheduleSyncToGitHub();
+render();
+}
+function updateProgress(){
+const total=tasks.length;
+const done=tasks.filter(t=>checkedState[t.id]).length;
+const remaining=total-done;
+const pd=document.getElementById('progressDisplay');
+const dot=document.getElementById('syncDot');
+pd.textContent=remaining>0?`残り ${remaining} 件`:'✅ 全完了';
+if(dot)pd.appendChild(dot);
+}
+const now=new Date();
+const days=['日','月','火','水','木','金','土'];
+document.getElementById('dateDisplay').textContent=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${days[now.getDay()]}）`;
+function checkNow(){document.getElementById('modalOverlay').classList.add('active');}
+function closeModal(e){if(e.target===document.getElementById('modalOverlay')){document.getElementById('modalOverlay').classList.remove('active');}}
+function threadLabel(s){return s==='open'?'📨 未対応':s==='waiting'?'⏳ 返答待ち':s==='resolved'?'✅ 完結':s;}
+function scrollToTask(id){
+const el=document.querySelector(`.task-item[data-id="${id}"]`);
+if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.background='#EEF2FF';setTimeout(()=>el.style.background='',2000);}
+}
+function toggleSummary(id,event){
+event.stopPropagation();
+const toggle=event.currentTarget;
+const box=document.getElementById('summary-'+id);
+if(box.classList.contains('open')){box.classList.remove('open');toggle.classList.remove('open');}
+else{box.classList.add('open');toggle.classList.add('open');}
+}
+function showMailModal(id,event){
+event.stopPropagation();
+const t=tasks.find(task=>task.id===id);
+if(!t)return;
+document.getElementById('mailModalTitle').textContent='✉ '+t.title;
+document.getElementById('mailModalMeta').innerHTML=
+`<div><strong>メール件名：</strong>${t.mailSubject||t.title}</div>`+
+`<div><strong>差出人：</strong>${t.from}${t.fromEmail?' &lt;'+t.fromEmail+'&gt;':''}</div>`+
+`<div><strong>受信日：</strong>${t.mailDate||'不明'}</div>`+
+`<div><strong>対応期限：</strong>${t.deadline}</div>`+
+`<div style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0"><strong>備考：</strong>${t.note}</div>`;
+document.getElementById('mailModalBody').textContent=t.summary||'（メール本文は未取得です）';
+document.getElementById('mailModalOverlay').classList.add('active');
+}
+function closeMailModal(e){if(e.target===document.getElementById('mailModalOverlay')){document.getElementById('mailModalOverlay').classList.remove('active');}}
+function copyCommand(){
+navigator.clipboard.writeText('Outlookのメールを確認してタスクリストを更新して').then(()=>{
+const msg=document.getElementById('copyMsg');
+msg.style.opacity='1';
+setTimeout(()=>msg.style.opacity='0',1500);
+});
+}
+let doneOpen=false;
+function toggleDoneSection(){
+doneOpen=!doneOpen;
+renderDone();
+}
+function purgeDone(id){
+purgedState[id]=!purgedState[id];
+savePurged(purgedState);
+renderDone();
+}
+function renderDone(){
+const sec=document.getElementById('doneSection');
+if(!sec)return;
+const visible=completedTasks.filter(t=>!purgedState[t.id]);
+if(visible.length===0&&Object.keys(purgedState).filter(k=>purgedState[k]).length===0){sec.innerHTML='';return;}
+const allItems=completedTasks.filter(t=>!purgedState[t.id]);
+if(allItems.length===0){sec.innerHTML='';return;}
+let html=`<div class="done-section">`;
+html+=`<div class="done-section-header ${doneOpen?'open':''}" onclick="toggleDoneSection()">`;
+html+=`<div><span class="arrow">▶</span> 完了済みタスク (${allItems.length}件)</div>`;
+html+=`<div style="font-size:0.8em;color:#94a3b8">✕で完全消去</div>`;
+html+=`</div>`;
+html+=`<div class="done-section-body ${doneOpen?'open':''}">`;
+for(const t of allItems){
+html+=`<div class="done-item">`;
+html+=`<div class="purge-check" onclick="purgeDone('${t.id}')" title="完全消去"></div>`;
+html+=`<div class="done-title">${t.title}</div>`;
+html+=`<div class="done-from">${t.from}</div>`;
+html+=`</div>`;
+}
+html+=`</div></div>`;
+sec.innerHTML=html;
+}
+render();
+(async()=>{
+if(getPAT()){
+setSyncDot('syncing');
+updateSyncInfo('GitHubから読み込み中...');
+const gh=await loadFromGitHub();
+if(gh&&gh.checked){
+checkedState=gh.checked;
+const cnt=Object.keys(gh.checked).filter(k=>gh.checked[k]).length;
+const now=new Date();
+const ts=`${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+updateSyncInfo('最終読込: '+ts+' (GitHub: '+cnt+'件チェック済)');
+setSyncDot('connected');
+}else{
+updateSyncInfo('GitHub読込失敗またはデータなし');
+setSyncDot('disconnected');
+}
+}else{
+checkedState=loadState();
+updateSyncInfo('PAT未設定 - localStorageを使用中');
+}
+initialized=true;
+saveState(checkedState);
+render();
+})();
+</script>
+</body>
+</html>

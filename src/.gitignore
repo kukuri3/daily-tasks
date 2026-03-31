@@ -1,0 +1,21 @@
+# キャッシュ（個人のタスクデータ）
+tasks_cache.json
+
+# ログ
+logs/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store
+
+# repo は別リポジトリ（GitHub Pages用）
+repo/
+
+# IDE
+.vscode/
+.idea/
+.claude/

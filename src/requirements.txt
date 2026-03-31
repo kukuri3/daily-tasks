@@ -1,0 +1,15 @@
+# 共通（macOS / Windows）
+jinja2
+
+# macOS メニューバーアプリ（macOSのみ）
+# rumps
+
+# Windows COM メール取得（Windowsのみ）
+# pywin32
+
+# Windows タスクトレイアプリ（Windowsのみ）
+# pystray
+# Pillow
+
+# Claude API（タスク抽出の高精度化、オプション）
+# anthropic
